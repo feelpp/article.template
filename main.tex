@@ -1,10 +1,22 @@
 \documentclass[a4paper]{article}
 \usepackage{fullpage}
 \usepackage{graphicx}
+\usepackage{xcolor}
+
 \usepackage{hyperref}
+
 \usepackage{minted}
 \usepackage{natbib}
-\usepackage{xcolor}
+
+% Define custom color
+\definecolor{CustomBlue}{rgb}{0.25, 0.41, 0.88} % RoyalBlue
+% Set up hyperref with the custom citecolor
+\hypersetup{
+    colorlinks=true,
+    citecolor=CustomBlue,
+    linkcolor=black, % You can set this to any color you prefer
+    urlcolor=blue    % You can set this to any color you prefer
+}
 
 % Define colors
 \definecolor{background}{RGB}{245,245,244}
@@ -87,9 +99,11 @@ As shown by \citet{AuthorYear}, this method is effective.
 
 \section{GitHub Action Workflow for LaTeX Compilation}
 
+The template article repository workflow uses \cite{cheng_xu_xu-chenglatex-action_2024} \mintline{bash}{xu-cheng/latex-action} to build the latex document.
+
 The GitHub Action workflow:
 \begin{itemize}
-    \item Compiles a LaTeX document
+    \item Compiles the LaTeX document using \mintline{bash}{xu-cheng/latex-action}
     \item Uploads the resulting PDF
     \item Creates a release with the PDF as an asset when a new tag is pushed of the type \texttt{v*}, e.g., \texttt{v1.0.0} or a pre-release \texttt{v1.0.0-preview.1}
 \end{itemize}
@@ -155,4 +169,6 @@ The GitHub Action workflow will automatically compile your LaTeX document and up
     \item Overleaf will automatically sync the changes, ensuring your references are up to date.
 \end{enumerate}
 
+\bibliographystyle{plainnat}
+\bibliography{references}
 \end{document}
