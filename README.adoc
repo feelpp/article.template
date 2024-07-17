@@ -4,8 +4,6 @@
 
 To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the `img-*` prefix and store them in the same directory as the `.tex` file. This makes it easier to manage and upload your images along with your LaTeX document.
 
-*Accepted formats*: PDF, PNG, JPG
-
 *Example*:
 - `img-figure1.pdf`
 - `img-figure2.png`
@@ -49,12 +47,12 @@ Use the `\cite{}`` command to cite references within your document. For example:
 As shown by \citet{AuthorYear}, this method is effective.
 ----
 
-= GitHub Action Workflow for LaTeX Compilation
+== GitHub Action Workflow for LaTeX Compilation
 
 The GitHub Action workflow :
-- compiles a LaTeX document 
-- uploads the resulting PDF
-- creates a release with the PDF as an asset when a new tag is pushed of the type `v*`, eg `v1.0.0` or a pre-release `v1.0.0-preview.1`
+. compiles a LaTeX document 
+. uploads the resulting PDF
+. creates a release with the PDF as an asset when a new tag is pushed of the type `v*`, eg `v1.0.0` or a pre-release `v1.0.0-preview.1`
 
 To create a git tag, do the following:
 [source,bash]
@@ -89,3 +87,16 @@ git add .
 git commit -m "Add initial LaTeX document and images"
 git push origin main
 ----
++
+The GitHub Action workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. You can download the compiled PDF from the Actions tab in your repository.
+
+== Overleaf Integration
+
+Sync GitHub Repository with Overleaf::	
+. In Overleaf, create a new project and select Import from GitHub.
+. Connect your GitHub account and select the repository you want to sync.
+. The sync will trigger the workflow and compile your LaTeX document in GitHub.
+
+Update References from Zotero::
+. Periodically export your references from Zotero to references.bib and push the updated file to your GitHub repository.
+. Overleaf will automatically sync the changes, ensuring your references are up to date.

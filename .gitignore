@@ -1,0 +1,9 @@
+_minted*
+*.aux
+*.bbl
+*.log
+*.blg
+*.out
+*.pyg
+*.synctex.gz
+main.pdf
