@@ -28,7 +28,7 @@ jobs:
           prefix=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
       - name: Upload PDF
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.1.0
         with:
           # get the name of the repo without the organisation
           name: PDF
@@ -41,7 +41,7 @@ jobs:
       versionedpdf: ${{ needs.build_latex.outputs.prefix }}.pdf
     steps:
       - name: Download PDF
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.2
         with:
           name: PDF
           path: .
