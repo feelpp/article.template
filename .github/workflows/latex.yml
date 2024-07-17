@@ -43,7 +43,12 @@ jobs:
       - name: Download PDF
         uses: actions/download-artifact@v4
         with:
-          name: ${{ env.versionedpdf }}
+          name: pdf-${{ needs.build_latex.outputs.prefix }}
+      - name: Rename to add version
+        run: |
+          ls -lrt
+          mv main.pdf ${{ env.versionedpdf}}
+          ls -lrt
 
   release:
     runs-on: ubuntu-latest
