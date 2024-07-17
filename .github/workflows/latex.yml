@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           # get the name of the repo without the organisation
-          name: pdf-${{ steps.repo_name.outputs.prefix }}
+          name: PDF
           path: main.pdf
 
   download:
@@ -43,7 +43,8 @@ jobs:
       - name: Download PDF
         uses: actions/download-artifact@v4
         with:
-          name: pdf-${{ needs.build_latex.outputs.prefix }}
+          name: PDF
+          path: .
       - name: Rename to add version
         run: |
           ls -lrt
