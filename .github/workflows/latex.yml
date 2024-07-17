@@ -23,7 +23,7 @@ jobs:
         with:
           root_file: main.tex
           latexmk_shell_escape: true
-          post_compile: "latexmk -c"
+          post_compile: "latexmk -c; rm -rf _minted*"
       - name: Get Repository Name
         id: repo_name
         run: |
