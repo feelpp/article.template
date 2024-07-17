@@ -99,11 +99,11 @@ As shown by \citet{AuthorYear}, this method is effective.
 
 \section{GitHub Action Workflow for LaTeX Compilation}
 
-The template article repository workflow uses \cite{cheng_xu_xu-chenglatex-action_2024} \mintline{bash}{xu-cheng/latex-action} to build the latex document.
+The template article repository workflow uses \cite{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
 
 The GitHub Action workflow:
 \begin{itemize}
-    \item Compiles the LaTeX document using \mintline{bash}{xu-cheng/latex-action}
+    \item Compiles the LaTeX document using \mintinline{bash}{xu-cheng/latex-action}
     \item Uploads the resulting PDF
     \item Creates a release with the PDF as an asset when a new tag is pushed of the type \texttt{v*}, e.g., \texttt{v1.0.0} or a pre-release \texttt{v1.0.0-preview.1}
 \end{itemize}
@@ -169,6 +169,6 @@ The GitHub Action workflow will automatically compile your LaTeX document and up
     \item Overleaf will automatically sync the changes, ensuring your references are up to date.
 \end{enumerate}
 
-\bibliographystyle{plainnat}
+\bibliographystyle{plain}
 \bibliography{references}
 \end{document}
