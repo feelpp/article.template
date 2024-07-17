@@ -18,7 +18,8 @@ The releases assets produced by the GitHub Actions allows to upload the article 
 
 To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the `img-*` prefix and store them in the same directory as the `.tex` file. This makes it easier to manage and upload your images along with your LaTeX document.
 
-*Example*:
+Example::
++
 - `img-figure1.pdf`
 - `img-figure2.png`
 - `img-figure3.jpg`
