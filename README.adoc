@@ -1,5 +1,13 @@
 = Template Repository for Articles
 
+== Introduction
+
+Writing scientific articles using LaTeX offers numerous advantages, including precise typesetting, seamless integration of references, and robust version control. 
+This template repository demonstrates best practices for organizing LaTeX projects, utilizing GitHub Actions for automated document compilation, managing bibliographies with Zotero, and optimizing image handling. 
+By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local LaTeX installations.
+The releases assets produced by the GitHub Actions allows to upload the article to HAL, arXiv, Zenodo, etc.
+
+
 == Image Naming Convention
 
 To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the `img-*` prefix and store them in the same directory as the `.tex` file. This makes it easier to manage and upload your images along with your LaTeX document.

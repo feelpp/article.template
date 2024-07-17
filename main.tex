@@ -8,6 +8,8 @@
 \usepackage{minted}
 \usepackage{natbib}
 
+\CatchFileDef{\myversion}{|echo $VERSION}{}
+
 % Define custom color
 \definecolor{CustomBlue}{rgb}{0.25, 0.41, 0.88} % RoyalBlue
 % Set up hyperref with the custom citecolor
@@ -39,13 +41,23 @@
 
 \begin{document}
 
-\title{Template Repository for Articles}
-\author{Christophe Prud'homme\thanks{Université de Strasbourg, France}}
+\title{Template Repository for Articles\\ \small\tt Version \myversion}
+\author{Christophe Prud'homme\thanks{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France, \tt \href{mailto:christophe.prudhomme@cemosis.fr}{christophe.prudhomme@cemosis.fr}}}
 \maketitle
 \tableofcontents
+
+\section{Introduction}
+\label{sec:introduction}
+
+Writing scientific articles using LaTeX offers numerous advantages, including precise typesetting, seamless integration of references, and robust version control. 
+This template repository demonstrates best practices for organizing LaTeX projects, utilizing GitHub Actions for automated document compilation, managing bibliographies with Zotero, and optimizing image handling. 
+By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local LaTeX installations.
+The releases assets produced by the GitHub Actions allows to upload the article to HAL, arXiv, Zenodo, etc.
+
 \section{Image Naming Convention}
 
-To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the \texttt{img-*} prefix and store them in the same directory as the \texttt{.tex} file. This makes it easier to manage and upload your images along with your LaTeX document.
+To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the \texttt{img-*} prefix and store them in the same directory as the \texttt{.tex} file. 
+This makes it easier to manage and upload your images along with your LaTeX document.
 
 \textbf{Example}:
 \begin{itemize}
@@ -168,6 +180,14 @@ The GitHub Action workflow will automatically compile your LaTeX document and up
     \item Periodically export your references from Zotero to \texttt{references.bib} and push the updated file to your GitHub repository.
     \item Overleaf will automatically sync the changes, ensuring your references are up to date.
 \end{enumerate}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This template provides a comprehensive approach for creating and managing LaTeX articles, integrating modern tools and workflows to enhance productivity and collaboration. 
+By leveraging GitHub Actions for automated compilation, Zotero for reference management, and Overleaf for online editing, researchers can streamline the writing process and focus more on content creation. 
+The structured setup ensures consistent formatting and efficient handling of images and references, making it suitable for both individual use and collaborative projects.
+
 
 \bibliographystyle{plain}
 \bibliography{references}
