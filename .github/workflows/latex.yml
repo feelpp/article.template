@@ -28,7 +28,7 @@ jobs:
           ls -lrt
           prefix=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
-          echo "pdf=$prefix-v${{ github.ref_name }}.pdf" >> "$GITHUB_OUTPUT"
+          echo "pdf=$prefix-${{ github.ref_name }}.pdf" >> "$GITHUB_OUTPUT"
       - 
         name: Rename PDF
         run: |
