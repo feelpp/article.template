@@ -1,9 +1,8 @@
 = Template Repository for Articles
 
-![GitHub Release](https://img.shields.io/github/v/release/feelpp/article.template)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/feelpp/article.template/latex.yml)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/feelpp/article.template/total)
-
+image:https://img.shields.io/github/v/release/feelpp/article.template[GitHub Release]
+image:https://img.shields.io/github/actions/workflow/status/feelpp/article.template/latex.yml[GitHub Actions Workflow Status]
+image:https://img.shields.io/github/downloads/feelpp/article.template/total[GitHub Downloads (all assets, all releases)]
 
 == Introduction
 
