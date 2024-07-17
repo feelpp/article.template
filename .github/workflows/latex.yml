@@ -20,13 +20,11 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
-          post_compile: |
-            mv main.pdf ${{ github.repository }}.pdf
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.repository }}.pdf
-          path: .
+          name: ${{ github.repository_id }}-PDF
+          path: main.pdf
 
   release:
     runs-on: ubuntu-latest
