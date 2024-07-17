@@ -20,10 +20,14 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
+      - name: Get Repository Name
+        id: repo_name
+        run: echo "repo=${{ github.repository }}" | cut -d'/' -f2 >> GITHUB_OUTPUT
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.repository_id }}-PDF
+          # get the name of the repo without the organisation
+          name: pdf-${{ steps.repo_name.outputs.repo }}
           path: main.pdf
 
   release:
