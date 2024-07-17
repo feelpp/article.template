@@ -22,6 +22,7 @@ jobs:
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
+          latexmk_shell_escape: true
       - name: Get Repository Name
         id: repo_name
         run: |
