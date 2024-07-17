@@ -1,5 +1,10 @@
 = Template Repository for Articles
 
+![GitHub Release](https://img.shields.io/github/v/release/feelpp/article.template)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/feelpp/article.template/latex.yml)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/feelpp/article.template/total)
+
+
 == Introduction
 
 Writing scientific articles using LaTeX offers numerous advantages, including precise typesetting, seamless integration of references, and robust version control. 
