@@ -1,0 +1,44 @@
+\documentclass{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Additional packages
+\usepackage{lipsum} % For dummy text
+\usepackage[colorlinks]{hyperref} % For clickable references
+
+% Title setup
+\title{Your Title}
+\subtitle{Subtitle of the Article}
+\author{Author A\thanks{Author Affiliation A} \and Author B\thanks{Author Affiliation B}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{abstract}
+This is the abstract of your article.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+\label{sec:intro}
+\lipsum[1-2] % Dummy text, replace with actual content
+
+\section{Main Body}
+\label{sec:main}
+\lipsum[3-4] % Dummy text, replace with actual content
+
+\section{Conclusion}
+\label{sec:conclusion}
+\lipsum[5] % Dummy text, replace with actual content
+
+% References section
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
