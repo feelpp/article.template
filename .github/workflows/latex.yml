@@ -12,7 +12,7 @@ on:
     
 jobs:
   build_latex:
-    runs-on: self-ubuntu-24.04
+    runs-on: ubuntu-latest
     outputs:
       prefix: ${{ steps.repo_name.outputs.prefix }}
     steps:
