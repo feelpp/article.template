@@ -35,9 +35,8 @@ cp .git/gitHeadInfo.gin gitHeadLocal.gin
 # Extract the base name of the script
 SCRIPT_NAME=$(basename "$0")
 
-if [ "$SCRIPT_NAME" = "post-commit" ]; then
-    git add gitHeadLocal.gin
-    mv .git/hooks/post-commit .git/hooks/post-commit.disabled
-    git commit -m "Updated gitHeadLocal.gin"
-    mv .git/hooks/post-commit.disabled .git/hooks/post-commit
-fi
+git add gitHeadLocal.gin
+mv .git/hooks/post-commit .git/hooks/post-commit.disabled
+git commit -m "Updated gitHeadLocal.gin"
+mv .git/hooks/post-commit.disabled .git/hooks/post-commit
+
