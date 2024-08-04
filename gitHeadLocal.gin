@@ -1,6 +1,6 @@
 \usepackage[%
-        shash={8551295},
-        lhash={85512952566d65f2ffe03372fb1f8b3fbae18879},
+        shash={e65c9e2},
+        lhash={e65c9e2f7454b5c49de946e2a8eceedebca803cd},
         authname={Christophe Prud'homme},
         authemail={christophe.prudhomme@cemosis.fr},
         authsdate={2024-08-04},
@@ -11,7 +11,7 @@
         commsdate={2024-08-04},
         commidate={2024-08-04 17:03:16 +0200},
         commudate={1722783796},
-        refnames={ (HEAD -> main)},
-        firsttagdescribe={v1.0.2-5-g8551295},
-        reltag={v1.0.2-5-g8551295}
+        refnames={ (HEAD -> main, tag: v1.1.1, tag: v1.1.0, origin/main, origin/HEAD)},
+        firsttagdescribe={v1.1.0},
+        reltag={v1.1.0-0-ge65c9e2}
     ]{gitexinfo}
