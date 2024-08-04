@@ -138,6 +138,23 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
 
 By following this workflow, you can efficiently manage your LaTeX documents, keep track of changes with Git, and automate the compilation and release process with GitHub Actions.
 
+\subsection{Release Script}
+
+The `release` script simplifies creating and listing releases for your LaTeX document. 
+
+\begin{description}
+    \item[Create a New Release]: To create a new release, use the following command:
+    \begin{minted}[bgcolor=background]{sh}
+        ./release create v1.0.0
+    \end{minted}
+    \item[List All Releases]: To list all releases, use the following command:
+    \begin{minted}[bgcolor=background]{sh}
+        ./release list
+    \end{minted}
+\end{description}
+
+This script provides an easy interface for managing releases, automating the tagging, updating, committing, and pushing processes.
+
 
 \section{Image Naming Convention}
 
