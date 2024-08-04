@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4.1.0
         with:
           # get the name of the repo without the organisation
-          name: PDF
+          name: ${{ steps.repo_name.outputs.pdf }}
           path: ${{ steps.repo_name.outputs.pdf }}
 
       -
