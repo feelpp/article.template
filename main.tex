@@ -95,12 +95,48 @@ These hooks will automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin
 The file \mintinline{sh}|gitHeadLocal.gin| is used when the document is compiled outside of a Git repository, e.g., in Overleaf or in an public archive such as HAL or arXiv.
 
 
-
-
-
 \subsection{Using GitHub Actions}
 
-The GitHub Actions workflow is configured to run the setup-hooks.sh script, ensuring that the Git hooks are set up in the CI environment. This allows the automated compilation of the LaTeX document to include the latest Git information.
+The GitHub Actions workflow is configured to run the \mintinline{sh}|setup-hooks.sh| script, ensuring that the Git hooks are set up in the CI environment.
+This allows the automated compilation of the LaTeX document to include the latest Git information in the article.
+
+\subsection{Full Article Workflow}
+
+Here is a summary of the full workflow for creating and maintaining a LaTeX document with Git support:
+
+\begin{enumerate}
+    \item \textbf{Clone the Repository}:
+    Clone the repository to your local machine:
+    \begin{minted}[bgcolor=background]{sh}
+    git clone https://github.com/your-username/your-repo.git
+    cd your-repo
+    \end{minted}
+    \item \textbf{Set Up Git Hooks}:
+    Run the setup-hooks.sh script to set up the necessary Git hooks:
+    \begin{minted}[bgcolor=background]{sh}
+    ./setup-hooks.sh
+    \end{minted}
+    \item \textbf{Make Changes to Your Document}:
+    Edit your LaTeX document and add, commit, and push changes to the repository:
+    \begin{minted}[bgcolor=background]{sh}
+    git add .
+    git commit -m “Update document”
+    git push origin main
+    \end{minted}
+    \item \textbf{Create a Tag for Release}:
+    Create and push a tag, using semver\footnote{\url{https://semver.org}},  to trigger the GitHub Actions workflow for building and releasing the document:
+    \begin{minted}[bgcolor=background]{sh}
+    git tag -a v1.0.0 -m “Version 1.0.0”
+    git push origin v1.0.0
+    \end{minted}
+    \item \textbf{Review GitHub Actions Workflow}:
+    The GitHub Actions workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. 
+    You can download the compiled PDF from the Actions tab in your repository.
+    \item \textbf{Sync with Overleaf}:
+    If you are using Overleaf, sync your GitHub repository with Overleaf to ensure you always have the latest version of your document.
+\end{enumerate}
+
+By following this workflow, you can efficiently manage your LaTeX documents, keep track of changes with Git, and automate the compilation and release process with GitHub Actions.
 
 
 \section{Image Naming Convention}

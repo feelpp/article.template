@@ -20,10 +20,8 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-      - name: Install hooks
-        run: |
-          sh ./setup-hooks.sh
-          git checkout
+      - name: Install hooks 
+        run: sh ./setup-hooks.sh
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
