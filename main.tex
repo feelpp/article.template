@@ -3,17 +3,30 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 
-\usepackage{hyperref}
+\IfFileExists{.git/gitHeadInfo.gin}{
+    \usepackage[pcount,grumpy,mark,markifdirty]{gitinfo2}
+}{%
+    \usepackage[local,pcount,grumpy,mark,markifdirty]{gitinfo2}
+}
+
+\usepackage[bookmarksnumbered,bookmarksopen,linktocpage]{hyperref}
 
 \usepackage{minted}
 \usepackage{natbib}
 
-\CatchFileDef{\myversion}{|echo $VERSION}{}
+
+\title{Template Repository for Articles}
+\author{Christophe Prud'homme\thanks{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France, \tt \href{mailto:christophe.prudhomme@cemosis.fr}{christophe.prudhomme@cemosis.fr}}}
+\date{\gitReln\  \gitAuthorDate\ (\gitAbbrevHash)}
 
 % Define custom color
 \definecolor{CustomBlue}{rgb}{0.25, 0.41, 0.88} % RoyalBlue
 % Set up hyperref with the custom citecolor
 \hypersetup{
+    pdftitle={\@title},
+    pdfauthor={\@author},
+    pdfsubject={\@subject},
+    pdfkeywords={mathematical and computational ophthalmology, finite element method, thermo-fluid dynamics, feelpp},
     colorlinks=true,
     citecolor=CustomBlue,
     linkcolor=black, % You can set this to any color you prefer
@@ -41,8 +54,6 @@
 
 \begin{document}
 
-\title{Template Repository for Articles\\ \small\tt Version \myversion}
-\author{Christophe Prud'homme\thanks{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France, \tt \href{mailto:christophe.prudhomme@cemosis.fr}{christophe.prudhomme@cemosis.fr}}}
 \maketitle
 \tableofcontents
 
@@ -53,6 +64,80 @@ Writing scientific articles using LaTeX offers numerous advantages, including pr
 This template repository demonstrates best practices for organizing LaTeX projects, utilizing GitHub Actions for automated document compilation, managing bibliographies with Zotero, and optimizing image handling. 
 By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local LaTeX installations.
 The releases assets produced by the GitHub Actions allows to upload the article to HAL, arXiv, Zenodo, etc.
+
+\section{Git Support}
+\label{sec:git-support}
+
+The `gitinfo2` package allows LaTeX documents to include information about the current state of the Git repository, such as the commit hash, author, and date. This is particularly useful for versioning and tracking changes in scientific documents.
+
+\subsection{Configuration}
+
+To include `gitinfo2` in your LaTeX document, add the following lines to your preamble:
+
+\begin{minted}[bgcolor=background]{latex}
+\IfFileExists{.git/gitHeadInfo.gin}{
+    \usepackage[pcount,grumpy,mark,markifdirty]{gitinfo2}
+}{%
+    \usepackage[local,pcount,grumpy,mark,markifdirty]{gitinfo2}
+}
+\end{minted}
+
+This configuration attempts to use .git/gitHeadInfo.gin if it exists (indicating a Git repository) and falls back to a local file if not.
+
+\subsection{Setting Up Git Hooks}
+
+To automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| file with each commit, you need to set up Git hooks. 
+This repository includes a script \mintinline{sh}|setup-hooks.sh| to simplify the installation of these hooks.
+
+This will copy the \mintinline{sh}|post-commit| and \mintinline{sh}|post-checkout| hook scripts to the .git/hooks directory and make them executable. 
+These hooks will automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| and update \mintinline{sh}|gitHeadLocal.gin| file after each commit or checkout.
+
+The file \mintinline{sh}|gitHeadLocal.gin| is used when the document is compiled outside of a Git repository, e.g., in Overleaf or in an public archive such as HAL or arXiv.
+
+
+\subsection{Using GitHub Actions}
+
+The GitHub Actions workflow is configured to run the \mintinline{sh}|setup-hooks.sh| script, ensuring that the Git hooks are set up in the CI environment.
+This allows the automated compilation of the LaTeX document to include the latest Git information in the article.
+
+\subsection{Full Article Workflow}
+
+Here is a summary of the full workflow for creating and maintaining a LaTeX document with Git support:
+
+\begin{enumerate}
+    \item \textbf{Clone the Repository}:
+    Clone the repository to your local machine:
+    \begin{minted}[bgcolor=background]{sh}
+    git clone https://github.com/your-username/your-repo.git
+    cd your-repo
+    \end{minted}
+    \item \textbf{Set Up Git Hooks}:
+    Run the setup-hooks.sh script to set up the necessary Git hooks:
+    \begin{minted}[bgcolor=background]{sh}
+    ./setup-hooks.sh
+    \end{minted}
+    \item \textbf{Make Changes to Your Document}:
+    Edit your LaTeX document and add, commit, and push changes to the repository:
+    \begin{minted}[bgcolor=background]{sh}
+    git add .
+    git commit -m “Update document”
+    git push origin main
+    \end{minted}
+    \item \textbf{Create a Tag for Release}:
+    Create and push a tag, using semver\footnote{\url{https://semver.org}},  to trigger the GitHub Actions workflow for building and releasing the document:
+    \begin{minted}[bgcolor=background]{sh}
+    git tag -a v1.0.0 -m “Version 1.0.0”
+    git push origin v1.0.0
+    \end{minted}
+    \item \textbf{Review GitHub Actions Workflow}:
+    The GitHub Actions workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. 
+    You can download the compiled PDF from the Actions tab in your repository.
+    \item \textbf{Sync with Overleaf}:
+    If you are using Overleaf, sync your GitHub repository with Overleaf to ensure you always have the latest version of your document.
+\end{enumerate}
+
+By following this workflow, you can efficiently manage your LaTeX documents, keep track of changes with Git, and automate the compilation and release process with GitHub Actions.
+
 
 \section{Image Naming Convention}
 
