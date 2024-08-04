@@ -31,3 +31,5 @@ git --no-pager log -1 --date=short --decorate=short \
     ]{gitexinfo}" HEAD > .git/gitHeadInfo.gin
 
 cp .git/gitHeadInfo.gin gitHeadLocal.gin
+git add gitHeadLocal.gin
+git commit -m "Updated gitHeadLocal.gin"
