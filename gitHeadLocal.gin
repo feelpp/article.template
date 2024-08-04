@@ -1,6 +1,6 @@
 \usepackage[%
-        shash={4e9a780},
-        lhash={4e9a780726d27c6ee178fe874450066cbdf62ca8},
+        shash={ad85e76},
+        lhash={ad85e7693b8aa32b308e1cc9e2686a6e4b5568fc},
         authname={Christophe Prud'homme},
         authemail={christophe.prudhomme@cemosis.fr},
         authsdate={2024-08-04},
@@ -12,6 +12,6 @@
         commidate={2024-08-04 09:56:57 +0200},
         commudate={1722758217},
         refnames={ (HEAD -> 5-add-support-for-gitinfo2)},
-        firsttagdescribe={v1.0.2-1921-g4e9a780-*},
-        reltag={v1.0.2-1921-g4e9a780-*}
+        firsttagdescribe={v1.0.2-1922-gad85e76-*},
+        reltag={v1.0.2-1922-gad85e76-*}
     ]{gitexinfo}
