@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Function to create a release
+create_release() {
+    VERSION=$1
+
+    if [ -z "$VERSION" ]; then
+        echo "Usage: $0 create vx.y.z"
+        exit 1
+    fi
+
+    # Tag the repository with the provided version
+    git tag -a "$VERSION" -m "Release $VERSION"
+
+    # Checkout the tag to trigger post-commit hook to update gitinfo2 info file
+    git checkout
+
+    # Push the changes and the tags
+    git push origin main --follow-tags
+
+    echo "Release $VERSION created and pushed successfully."
+}
+
+# Function to list releases
+list_releases() {
+    git tag
+}
+
+# Main script logic
+case "$1" in
+    create)
+        create_release "$2"
+        ;;
+    list)
+        list_releases
+        ;;
+    *)
+        echo "Usage: $0 {create|list} [version]"
+        exit 1
+        ;;
+esac
