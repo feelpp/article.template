@@ -1,0 +1,42 @@
+#!/bin/sh
+# Copyright 2015 Brent Longborough
+# Part of gitinfo2 package Version 2
+# Release 2.0.7 2015-11-22
+# Please read gitinfo2.pdf for licencing and other details
+# -----------------------------------------------------
+# Post-{commit,checkout,merge} hook for the gitinfo2 package
+#
+# Get the first tag found in the history from the current HEAD
+FIRSTTAG=$(git describe --tags --always --dirty='-*' 2>/dev/null)
+# Get the first tag in history that looks like a Release
+RELTAG=$(git describe --tags --long --always --dirty='-*' --match 'v[0-9]*\.[0-9]*\.[0-9]*' 2>/dev/null)
+# Hoover up the metadata
+git --no-pager log -1 --date=short --decorate=short \
+    --pretty=format:"\usepackage[%
+        shash={%h},
+        lhash={%H},
+        authname={%an},
+        authemail={%ae},
+        authsdate={%ad},
+        authidate={%ai},
+        authudate={%at},
+        commname={%cn},
+        commemail={%ce},
+        commsdate={%cd},
+        commidate={%ci},
+        commudate={%ct},
+        refnames={%d},
+        firsttagdescribe={$FIRSTTAG},
+        reltag={$RELTAG}
+    ]{gitexinfo}" HEAD > .git/gitHeadInfo.gin
+
+cp .git/gitHeadInfo.gin gitHeadLocal.gin
+
+# Extract the base name of the script
+SCRIPT_NAME=$(basename "$0")
+
+git add gitHeadLocal.gin
+mv .git/hooks/post-commit .git/hooks/post-commit.disabled
+git commit -m "Updated gitHeadLocal.gin"
+mv .git/hooks/post-commit.disabled .git/hooks/post-commit
+
