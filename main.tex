@@ -3,17 +3,30 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 
-\usepackage{hyperref}
+\IfFileExists{.git/gitHeadInfo.gin}{
+    \usepackage[pcount,grumpy,mark,markifdirty]{gitinfo2}
+}{%
+    \usepackage[local,pcount,grumpy,mark,markifdirty]{gitinfo2}
+}
+
+\usepackage[bookmarksnumbered,bookmarksopen,linktocpage]{hyperref}
 
 \usepackage{minted}
 \usepackage{natbib}
 
-\CatchFileDef{\myversion}{|echo $VERSION}{}
+
+\title{Template Repository for Articles}
+\author{Christophe Prud'homme\thanks{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France, \tt \href{mailto:christophe.prudhomme@cemosis.fr}{christophe.prudhomme@cemosis.fr}}}
+\date{\gitReln\  \gitAuthorDate\ (\gitAbbrevHash)}
 
 % Define custom color
 \definecolor{CustomBlue}{rgb}{0.25, 0.41, 0.88} % RoyalBlue
 % Set up hyperref with the custom citecolor
 \hypersetup{
+    pdftitle={\@title},
+    pdfauthor={\@author},
+    pdfsubject={\@subject},
+    pdfkeywords={mathematical and computational ophthalmology, finite element method, thermo-fluid dynamics, feelpp},
     colorlinks=true,
     citecolor=CustomBlue,
     linkcolor=black, % You can set this to any color you prefer
@@ -41,8 +54,6 @@
 
 \begin{document}
 
-\title{Template Repository for Articles\\ \small\tt Version \myversion}
-\author{Christophe Prud'homme\thanks{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France, \tt \href{mailto:christophe.prudhomme@cemosis.fr}{christophe.prudhomme@cemosis.fr}}}
 \maketitle
 \tableofcontents
 
