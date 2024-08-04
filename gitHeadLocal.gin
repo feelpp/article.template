@@ -1,0 +1,17 @@
+\usepackage[%
+        shash={53aca10},
+        lhash={53aca10e6c7db7e955874135f30bcb699f97e600},
+        authname={Christophe Prud'homme},
+        authemail={christophe.prudhomme@feelpp.org},
+        authsdate={2024-07-17},
+        authidate={2024-07-17 16:17:03 +0200},
+        authudate={1721225823},
+        commname={Christophe Prud'homme},
+        commemail={christophe.prudhomme@feelpp.org},
+        commsdate={2024-07-17},
+        commidate={2024-07-17 16:17:03 +0200},
+        commudate={1721225823},
+        refnames={ (HEAD -> main)},
+        firsttagdescribe={v1.0.2-2-g53aca10},
+        reltag={v1.0.2-2-g53aca10}
+    ]{gitexinfo}
