@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       prefix: ${{ steps.repo_name.outputs.prefix }}
+      prefixwithref: ${{ steps.repo_name.outputs.prefixwithref }}
+      pdf: ${{ steps.repo_name.outputs.pdf }}
+      tex: ${{ steps.repo_name.outputs.tex }}
     env:
       VERSION: ${{ github.ref_name }}
     steps:
@@ -26,7 +29,8 @@ jobs:
           ls -lrt
           prefix=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
-          echo "pdf=$prefix-${{ github.ref_name }}.pdf" >> "$GITHUB_OUTPUT"
+          echo "prefixwithref=$(echo "$prefix")-${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          echo "pdf=$prefixwithref.pdf" >> "$GITHUB_OUTPUT"
           echo "tex=$prefix.tex" >> "$GITHUB_OUTPUT"
       - name: Install hooks 
         run: |
@@ -42,12 +46,23 @@ jobs:
         name: Rename PDF
         run: |
             mv ${{ steps.repo_name.outputs.prefix }}.pdf ${{ steps.repo_name.outputs.pdf }}
-      - name: Upload PDF
+      
+      - name: Archive Article
+        run: |
+          tar -czvf ${{ steps.repo_name.outputs.prefixwithref }}.tar.gz ./ --exclude="*.git*" --exclude="*.github*" --exclude="*.vscode*" --exclude="*.idea*" --exclude="*.DS_Store*"
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4.1.0
         with:
           # get the name of the repo without the organisation
-          name: ${{ steps.repo_name.outputs.pdf }}
-          path: ${{ steps.repo_name.outputs.pdf }}
+          name: ${{ steps.repo_name.outputs.prefixwithref }}
+          path: |
+            ./
+            !./.git*
+            !./.github*
+            !./.vscode*
+            !./.idea*
+            !./.DS_Store*
+            !./.gitignore*
 
       -
         name: Create Release
@@ -63,3 +78,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             ${{ steps.repo_name.outputs.pdf }}
+            ${{ steps.repo_name.outputs.prefixwithref }}.tar.gz
