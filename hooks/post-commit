@@ -30,13 +30,4 @@ git --no-pager log -1 --date=short --decorate=short \
         reltag={$RELTAG}
     ]{gitexinfo}" HEAD > .git/gitHeadInfo.gin
 
-cp .git/gitHeadInfo.gin gitHeadLocal.gin
-
-# Extract the base name of the script
-SCRIPT_NAME=$(basename "$0")
-
-git add gitHeadLocal.gin
-mv .git/hooks/post-commit .git/hooks/post-commit.disabled
-git commit -m "Updated gitHeadLocal.gin"
-mv .git/hooks/post-commit.disabled .git/hooks/post-commit
 

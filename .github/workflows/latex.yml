@@ -21,7 +21,9 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
       - name: Install hooks 
-        run: sh ./setup-hooks.sh
+        run: |
+          sh ./setup-hooks.sh
+          git checkout ${{ github.ref }} # checkout the branch or tag to update gitinfo2
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
