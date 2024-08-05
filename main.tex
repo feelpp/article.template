@@ -9,11 +9,12 @@
     \usepackage[local,pcount,grumpy,mark,markifdirty]{gitinfo2}
 }
 
-\usepackage[bookmarksnumbered,bookmarksopen,linktocpage]{hyperref}
+
 
 \usepackage{minted}
 \usepackage{natbib}
 
+\usepackage{hyperref}
 
 \title{Template Repository for Articles}
 \author{Christophe Prud'homme\thanks{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France, \tt \href{mailto:christophe.prudhomme@cemosis.fr}{christophe.prudhomme@cemosis.fr}}}
@@ -27,10 +28,11 @@
     pdfauthor={\@author},
     pdfsubject={\@subject},
     pdfkeywords={mathematical and computational ophthalmology, finite element method, thermo-fluid dynamics, feelpp},
+    bookmarksnumbered,bookmarksopen,linktocpage,
     colorlinks=true,
     citecolor=CustomBlue,
-    linkcolor=black, % You can set this to any color you prefer
-    urlcolor=blue    % You can set this to any color you prefer
+    linkcolor=CustomBlue,
+    urlcolor=blue 
 }
 
 % Define colors
@@ -64,6 +66,8 @@ Writing scientific articles using LaTeX offers numerous advantages, including pr
 This template repository demonstrates best practices for organizing LaTeX projects, utilizing GitHub Actions for automated document compilation, managing bibliographies with Zotero, and optimizing image handling. 
 By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local LaTeX installations.
 The releases assets produced by the GitHub Actions allows to upload the article to HAL, arXiv, Zenodo, etc.
+
+
 
 \section{Git Support}
 \label{sec:git-support}
@@ -116,6 +120,11 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
     \begin{minted}[bgcolor=background]{sh}
     ./setup-hooks.sh
     \end{minted}
+    \item  \textbf{Compile the Document}:
+    Compile the LaTeX document to generate the PDF:
+    \begin{minted}[bgcolor=background]{sh}
+    pdflatex -shell-escape main.tex
+    \end{minted}
     \item \textbf{Make Changes to Your Document}:
     Edit your LaTeX document and add, commit, and push changes to the repository:
     \begin{minted}[bgcolor=background]{sh}
@@ -126,8 +135,7 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
     \item \textbf{Create a Tag for Release}:
     Create and push a tag, using semver\footnote{\url{https://semver.org}},  to trigger the GitHub Actions workflow for building and releasing the document:
     \begin{minted}[bgcolor=background]{sh}
-    git tag -a v1.0.0 -m “Version 1.0.0”
-    git push origin v1.0.0
+    ./release create v1.0.0
     \end{minted}
     \item \textbf{Review GitHub Actions Workflow}:
     The GitHub Actions workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. 
@@ -151,6 +159,11 @@ The `release` script simplifies creating and listing releases for your LaTeX doc
     \begin{minted}[bgcolor=background]{sh}
         ./release list
     \end{minted}
+    \item[Delete a Release]: To delete a release, use the following command:
+    \begin{minted}[bgcolor=background]{sh}
+        ./release delete v1.0.0
+    \end{minted}
+
 \end{description}
 
 This script provides an easy interface for managing releases, automating the tagging, updating, committing, and pushing processes.
