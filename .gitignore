@@ -5,6 +5,9 @@ _minted*
 *.blg
 *.out
 *.pyg
+*.fls
 *.synctex.gz
 main.pdf
 *.toc
+article.template.pdf
+*.fdb_latexmk
