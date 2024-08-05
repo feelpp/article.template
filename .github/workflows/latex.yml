@@ -47,10 +47,14 @@ jobs:
         name: Rename PDF
         run: |
             mv ${{ steps.repo_name.outputs.prefix }}.pdf ${{ steps.repo_name.outputs.pdf }}
-      
+
       - name: Archive Article
         run: |
-          tar -czvf ${{ steps.repo_name.outputs.prefixwithref }}.tar.gz --exclude="*.git*" --exclude="*.github*" --exclude="*.vscode*" --exclude="*.idea*" --exclude="*.gitignore" --exclude="*.DS_Store*" ./
+          temp_dir=$(mktemp -d)
+          tar -czvf "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" --exclude="*.git*" --exclude="*.github*" --exclude="*.vscode*" --exclude="*.idea*" --exclude="*.gitignore" --exclude="*.DS_Store*" ./
+          mv "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" ./
+          rm -rf "$temp_dir"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4.1.0
         with:
