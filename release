@@ -18,6 +18,15 @@ create_release() {
     # Checkout the tag to trigger post-commit hook to update gitinfo2 info file
     git checkout
 
+    # show the reltag line of .git/gitHeadInfo.gin
+    grep reltag .git/gitHeadInfo.gin
+
+    cp .git/gitHeadInfo.gin gitHeadLocal.gin
+
+    git add gitHeadLocal.gin
+    git commit -m "Updated gitHeadLocal.gin for release $VERSION"
+    git tag -f -a "$VERSION" -m "Release $VERSION"
+
     # Push the changes and the tags
     git push origin main --follow-tags
 
@@ -29,6 +38,24 @@ list_releases() {
     git tag
 }
 
+# Function to delete a release
+delete_release() {
+    VERSION=$1
+
+    if [ -z "$VERSION" ]; then
+        echo "Usage: $0 delete vx.y.z"
+        exit 1
+    fi
+
+    # Delete the tag locally
+    git tag -d "$VERSION"
+
+    # Delete the tag remotely
+    #git push origin --delete "$VERSION"
+
+    echo "Release $VERSION deleted successfully."
+}
+
 # Main script logic
 case "$1" in
     create)
@@ -37,8 +64,11 @@ case "$1" in
     list)
         list_releases
         ;;
+    delete)
+        delete_release "$2"
+        ;;
     *)
-        echo "Usage: $0 {create|list} [version]"
+        echo "Usage: $0 {create|list|delete} [version]"
         exit 1
         ;;
 esac
