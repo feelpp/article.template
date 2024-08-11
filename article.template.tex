@@ -72,7 +72,7 @@ The releases assets produced by the GitHub Actions allows to upload the article 
 \section{Git Support}
 \label{sec:git-support}
 
-The `gitinfo2` package allows LaTeX documents to include information about the current state of the Git repository, such as the commit hash, author, and date. This is particularly useful for versioning and tracking changes in scientific documents.
+The `gitinfo2` package~\citep{brent_longborough_gitinfo2sty_2015} allows LaTeX documents to include information about the current state of the Git repository, such as the commit hash, author, and date. This is particularly useful for versioning and tracking changes in scientific documents.
 
 \subsection{Configuration}
 
@@ -226,7 +226,7 @@ As shown by \citet{AuthorYear}, this method is effective.
 
 \section{GitHub Action Workflow for LaTeX Compilation}
 
-The template article repository workflow uses \cite{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
+The template article repository workflow uses \citep{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
 
 The GitHub Action workflow:
 \begin{itemize}
@@ -299,8 +299,8 @@ The GitHub Action workflow will automatically compile your LaTeX document and up
 \section{Conclusion}
 \label{sec:conclusion}
 
-This template provides a comprehensive approach for creating and managing LaTeX articles, integrating modern tools and workflows to enhance productivity and collaboration. 
-By leveraging GitHub Actions for automated compilation, Zotero for reference management, and Overleaf for online editing, researchers can streamline the writing process and focus more on content creation. 
+This template provides a comprehensive approach for creating and managing LaTeX articles, integrating modern tools and workflow to enhance productivity and collaboration. 
+By leveraging GitHub Actions for automated compilation, Zotero for reference management, Overleaf for online editing, and Vscode using \LaTeX workshop extension for editing, researchers can streamline the writing process and focus more on content creation. 
 The structured setup ensures consistent formatting and efficient handling of images and references, making it suitable for both individual use and collaborative projects.
 
 
