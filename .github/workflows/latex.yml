@@ -1,6 +1,4 @@
-
 name: Compile Latex and Release PDF
-
 
 on:
   push:
@@ -8,7 +6,6 @@ on:
       - 'v*'
     branches:
       - '*'
-
 
 jobs:
   build_latex:
@@ -23,45 +20,43 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
+
       - name: Get Repository Name
         id: repo_name
         run: |
-          ls -lrt
           prefix=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
           prefixwithref=$(echo "$prefix")-${{ github.ref_name }}
           echo "prefixwithref=$prefixwithref" >> "$GITHUB_OUTPUT"
           echo "pdf=$prefixwithref.pdf" >> "$GITHUB_OUTPUT"
           echo "tex=$prefix.tex" >> "$GITHUB_OUTPUT"
+
       - name: Install hooks 
         run: |
           sh ./setup-hooks.sh
           git checkout ${{ github.ref }} # checkout the branch or tag to update gitinfo2
+
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
           root_file: ${{ steps.repo_name.outputs.tex }}
           latexmk_shell_escape: true
           post_compile: "latexmk -c; rm -rf _minted*"
-      -
-        name: Rename PDF
-        run: |
-            mv ${{ steps.repo_name.outputs.prefix }}.pdf ${{ steps.repo_name.outputs.pdf }}
 
-      - name: Archive Article
-        run: |
-          temp_dir=$(mktemp -d)
-          tar -czvf "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" --exclude="*.git*" --exclude="*.github*" --exclude="*.vscode*" --exclude="*.idea*" --exclude="*.gitignore" --exclude="*.DS_Store*" ./
-          mv "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" ./
-          rm -rf "$temp_dir"
+      - name: Rename PDF
+        run: mv ${{ steps.repo_name.outputs.prefix }}.pdf ${{ steps.repo_name.outputs.pdf }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.1.0
+        uses: actions/upload-artifact@v4
         with:
-          # get the name of the repo without the organisation
           name: ${{ steps.repo_name.outputs.prefixwithref }}
           path: |
-            ./
+            ./*.tex
+            ./*.bib
+            ./*.gin
+            ./*.bbl
+            ./readme.*
+            ./img-*
             !./.git*
             !./.github*
             !./.vscode*
@@ -69,8 +64,30 @@ jobs:
             !./.DS_Store*
             !./.gitignore*
 
-      -
-        name: Create Release
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.repo_name.outputs.prefixwithref }}
+          path: ${{ github.workspace }}/artifact
+      - name: List Artifact
+        run: ls -R ${{ github.workspace }}
+
+      - name: Archive Article
+        run: |
+          temp_dir=$(mktemp -d)
+          tar -czvf "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" -C artifact ./
+          mv "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" ./
+          rm -rf "$temp_dir"
+
+      - name: Check compilation of LaTeX document from artifact
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ${{ steps.repo_name.outputs.tex }}
+          latexmk_shell_escape: true
+          post_compile: "latexmk -c; rm -rf _minted*"
+          work_in_root_file_dir: ${{ github.workspace }}/artifact
+
+      - name: Create Release
         id: create_release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
