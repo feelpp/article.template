@@ -30,7 +30,7 @@ jobs:
                 echo "runner=self-texlive" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "runner=ubuntu-latest" >> "$GITHUB_OUTPUT
+            echo "runner=ubuntu-latest" >> "$GITHUB_OUTPUT"
           fi
         env:
           GH_TOKEN: ${{ secrets.TOKEN_RUNNER }}
