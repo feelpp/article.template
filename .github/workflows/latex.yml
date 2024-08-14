@@ -119,4 +119,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             artifact/${{ needs.build_latex.outputs.prefixwithref }}.pdf
-            artifact/${{ needs.build_latex.outputs.prefixwithref }}.tar.gz
+            ${{ needs.build_latex.outputs.prefixwithref }}.tar.gz
