@@ -10,7 +10,7 @@ on:
 jobs:
   workflow-setup:
     name: Workflow Setup
-    runs-on: self-ubuntu-24.04
+    runs-on: ubuntu-24.04
     outputs:
       runner: ${{ steps.texlive_runner.outputs.runner }}
       prefix: ${{ steps.doc_prefix.outputs.prefix }}
@@ -100,7 +100,7 @@ jobs:
             !./.gitignore*
   check:
       needs: [build_latex,workflow-setup]
-      runs-on: ubuntu-latest
+      runs-on: ${{ needs.workflow-setup.outputs.runner }}
       name: Check LaTeX Artifact
       steps:
       -
