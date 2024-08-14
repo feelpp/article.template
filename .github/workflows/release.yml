@@ -1,0 +1,20 @@
+name: Create Release
+
+on:
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: 'Tag for the release'
+                required: true
+                type: string
+                default: 'vx.y.z'
+
+jobs:
+    create:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Release
+              run: |
+                bash ./release create ${{ github.event.inputs.tag }}
