@@ -24,7 +24,7 @@ create_release() {
         exit 1
     fi
 
-    
+
     # Tag the repository with the provided version
     git tag -a "$VERSION" -m "Release $VERSION"
 

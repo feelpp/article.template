@@ -93,6 +93,8 @@ This configuration attempts to use .git/gitHeadInfo.gin if it exists (indicating
 To automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| file with each commit, you need to set up Git hooks. 
 This repository includes a script \mintinline{sh}|setup-hooks.sh| to simplify the installation of these hooks.
 
+\inputminted[linenos,autogobble,bgcolor=background,fontsize=\small]{sh}{setup-hooks.sh}
+
 This will copy the \mintinline{sh}|post-commit| and \mintinline{sh}|post-checkout| hook scripts to the .git/hooks directory and make them executable. 
 These hooks will automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| and update \mintinline{sh}|gitHeadLocal.gin| file after each commit or checkout.
 
@@ -104,11 +106,23 @@ The file \mintinline{sh}|gitHeadLocal.gin| is used when the document is compiled
 The GitHub Actions workflow is configured to run the \mintinline{sh}|setup-hooks.sh| script, ensuring that the Git hooks are set up in the CI environment.
 This allows the automated compilation of the LaTeX document to include the latest Git information in the article.
 
+The template article repository workflow uses \citep{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
+
+The GitHub Action workflow:
+\begin{itemize}
+    \item Compiles the LaTeX document using \mintinline{bash}{xu-cheng/latex-action} on \texttt{ubuntu-latest} runner or \texttt{self-texlive} runner hosted on \texttt{feelpp} organisation.
+    \item Uploads the resulting PDF
+    \item Creates a release with the PDF as an asset when a new tag is pushed of the type \texttt{v*}, e.g., \texttt{v1.0.0}.
+\end{itemize}
+
 \subsection{Full Article Workflow}
+\label{sec:full-article-workflow}
+
 
 Here is a summary of the full workflow for creating and maintaining a LaTeX document with Git support:
 
 \begin{enumerate}
+    \item \textbf{Check out the organisation}: if the organisation is \texttt{feelpp} and a \texttt{self-texlive} labelled runner is online, the compilation will be done using the \texttt{self-texlive} runner other it will use the \texttt{ubuntu-latest} runner.
     \item \textbf{Clone the Repository}:
     Clone the repository to your local machine:
     \begin{minted}[bgcolor=background]{sh}
@@ -146,12 +160,16 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
 
 By following this workflow, you can efficiently manage your LaTeX documents, keep track of changes with Git, and automate the compilation and release process with GitHub Actions.
 
-\subsection{Release Script}
+\subsection{Document Release}
 
 The `release` script simplifies creating and listing releases for your LaTeX document. 
 
+\inputminted[linenos, fontsize=\small, bgcolor=background]{sh}{release}
+
+
+
 \begin{description}
-    \item[Create a New Release]: To create a new release, use the following command:
+    \item[Create a New Release]: To create a new release on GitHub, use the following command:
     \begin{minted}[bgcolor=background]{sh}
         ./release create v1.0.0
     \end{minted}
@@ -224,23 +242,7 @@ Use the \mintinline{latex}{\cite} command to cite references within your documen
 As shown by \citet{AuthorYear}, this method is effective.
 \end{minted}
 
-\section{GitHub Action Workflow for LaTeX Compilation}
 
-The template article repository workflow uses \citep{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
-
-The GitHub Action workflow:
-\begin{itemize}
-    \item Compiles the LaTeX document using \mintinline{bash}{xu-cheng/latex-action}
-    \item Uploads the resulting PDF
-    \item Creates a release with the PDF as an asset when a new tag is pushed of the type \texttt{v*}, e.g., \texttt{v1.0.0} or a pre-release \texttt{v1.0.0-preview.1}
-\end{itemize}
-
-To create a git tag, do the following:
-
-\begin{minted}[bgcolor=background]{bash}
-git tag -a v1.0.0 -m "Version 1.0.0"
-git push origin v1.0.0
-\end{minted}
 
 \section{Steps to Use the Template Repository}
 
