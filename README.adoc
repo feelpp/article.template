@@ -1,10 +1,23 @@
 = Template Repository for Articles
+:author: Christophe Prud'homme
+:!figure-caption:
 
+[.author]
+Christophe Prud'homme::
+Cemosis, Institut de Recherche Mathématique Avancée, UMR 7501 Université de Strasbourg - CNRS
+email: christophe.prudhomme@math.unistra.fr
+
+.Zenodo DOI
+--
 image::https://zenodo.org/badge/DOI/10.5281/zenodo.12760236.svg[DOI, link=https://doi.org/10.5281/zenodo.12760236]
+--
 
+.GitHub Information
+--
 image:https://img.shields.io/github/v/release/feelpp/article.template[GitHub Release]
 image:https://img.shields.io/github/actions/workflow/status/feelpp/article.template/latex.yml[GitHub Actions Workflow Status]
 image:https://img.shields.io/github/downloads/feelpp/article.template/total[GitHub Downloads (all assets, all releases)]
+--
 
 == Introduction
 
