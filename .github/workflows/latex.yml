@@ -17,6 +17,8 @@ jobs:
       prefixwithref: ${{ steps.doc_prefix.outputs.prefixwithref }}
       pdf: ${{ steps.doc_prefix.outputs.pdf }}
       tex: ${{ steps.doc_prefix.outputs.tex }}
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Get TeXLive Runner
         id: texlive_runner
