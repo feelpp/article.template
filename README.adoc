@@ -1,6 +1,7 @@
 = Template Repository for Articles
-:author: Christophe Prud'homme
+Christophe Prud'homme
 :!figure-caption:
+:version: v1.4.0
 
 [.author]
 Christophe Prud'homme::
@@ -9,7 +10,7 @@ email: christophe.prudhomme@cemosis.fr
 
 .Zenodo DOI
 --
-image::https://zenodo.org/badge/DOI/10.5281/zenodo.12760236.svg[DOI, link=https://doi.org/10.5281/zenodo.12760236]
+image::https://zenodo.org/badge/DOI/10.5281/zenodo.13224368.svg[DOI, link=https://doi.org/10.5281/zenodo.13224368]
 --
 
 .GitHub Information
@@ -26,6 +27,30 @@ This template repository demonstrates best practices for organizing LaTeX projec
 By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local LaTeX installations.
 The releases assets produced by the GitHub Actions allows to upload the article to HAL, arXiv, Zenodo, etc.
 
+== How to cite
+
+If you use this template, please cite it as follows:
+
+.Chicago style
+[source]
+----
+Christophe Prud'homme. “Feelpp/article.template: Release V1.4.0”. Zenodo, August 5, 2024. https://doi.org/10.5281/zenodo.13224368.
+----
+
+.BibTeX
+[source,bibtex]
+----
+@software{christophe_prud_homme_2024_13224368,
+  author       = {Christophe Prud'homme},
+  title        = {feelpp/article.template: Release v1.4.0},
+  month        = aug,
+  year         = 2024,
+  publisher    = {Zenodo},
+  version      = {v1.4.0},
+  doi          = {10.5281/zenodo.13224368},
+  url          = {https://doi.org/10.5281/zenodo.13224368}
+}
+----
 
 == Image Naming Convention
 
