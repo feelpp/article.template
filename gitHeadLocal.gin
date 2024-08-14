@@ -1,17 +1,17 @@
 \usepackage[%
-        shash={d31cb2e},
-        lhash={d31cb2e81f60942e9ee4df41fb83583bb449f8aa},
+        shash={f662b43},
+        lhash={f662b43b2a35a9b03640010932ca6778e4242770},
         authname={Christophe Prud'homme},
         authemail={christophe.prudhomme@cemosis.fr},
         authsdate={2024-08-14},
-        authidate={2024-08-14 10:44:09 +0200},
-        authudate={1723625049},
-        commname={Christophe Prud'homme},
-        commemail={christophe.prudhomme@cemosis.fr},
+        authidate={2024-08-14 16:32:08 +0200},
+        authudate={1723645928},
+        commname={GitHub},
+        commemail={noreply@github.com},
         commsdate={2024-08-14},
-        commidate={2024-08-14 10:44:09 +0200},
-        commudate={1723625049},
-        refnames={ (HEAD -> main, tag: v1.5.1, origin/main, origin/HEAD)},
-        firsttagdescribe={v1.5.1},
-        reltag={v1.5.1-0-gd31cb2e}
+        commidate={2024-08-14 16:32:08 +0200},
+        commudate={1723645928},
+        refnames={ (HEAD -> main, tag: v1.6.0, origin/main, origin/HEAD)},
+        firsttagdescribe={v1.6.0},
+        reltag={v1.6.0-0-gf662b43}
     ]{gitexinfo}
