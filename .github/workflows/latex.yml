@@ -10,6 +10,7 @@ on:
 jobs:
   build_latex:
     runs-on: ubuntu-latest
+    name: Build LaTeX Artifact
     outputs:
       prefix: ${{ steps.repo_name.outputs.prefix }}
       prefixwithref: ${{ steps.repo_name.outputs.prefixwithref }}
@@ -55,7 +56,8 @@ jobs:
             ./*.bib
             ./*.gin
             ./*.bbl
-            ./readme.*
+            ./${{ steps.repo_name.outputs.pdf }}
+            ./README.adoc
             ./img-*
             !./.git*
             !./.github*
@@ -63,11 +65,15 @@ jobs:
             !./.idea*
             !./.DS_Store*
             !./.gitignore*
-
+  check:
+      needs: build_latex
+      runs-on: ubuntu-latest
+      name: Check LaTeX Artifact
+      steps:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ steps.repo_name.outputs.prefixwithref }}
+          name: ${{ needs.build_latex.outputs.prefixwithref }}
           path: ${{ github.workspace }}/artifact
       - name: List Artifact
         run: ls -R ${{ github.workspace }}
@@ -75,17 +81,31 @@ jobs:
       - name: Archive Article
         run: |
           temp_dir=$(mktemp -d)
-          tar -czvf "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" -C artifact ./
-          mv "${temp_dir}/${{ steps.repo_name.outputs.prefixwithref }}.tar.gz" ./
+          tar -czvf "${temp_dir}/${{ needs.build_latex.outputs.prefixwithref }}.tar.gz" -C artifact ./
+          mv "${temp_dir}/${{ needs.build_latex.outputs.prefixwithref }}.tar.gz" ./
           rm -rf "$temp_dir"
 
       - name: Check compilation of LaTeX document from artifact
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: ${{ steps.repo_name.outputs.tex }}
+          root_file: ${{ needs.build_latex.outputs.tex }}
           latexmk_shell_escape: true
           post_compile: "latexmk -c; rm -rf _minted*"
           work_in_root_file_dir: ${{ github.workspace }}/artifact
+
+  release:
+    needs: [build_latex, check]
+    runs-on: ubuntu-latest
+    name: Create Release
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build_latex.outputs.prefixwithref }}
+          path: ${{ github.workspace }}/artifact
 
       - name: Create Release
         id: create_release
@@ -99,5 +119,5 @@ jobs:
           tag_name: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            ${{ steps.repo_name.outputs.pdf }}
-            ${{ steps.repo_name.outputs.prefixwithref }}.tar.gz
+            artifact/${{ needs.build_latex.outputs.prefixwithref }}.pdf
+            artifact/${{ needs.build_latex.outputs.prefixwithref }}.tar.gz

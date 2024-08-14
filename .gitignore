@@ -11,3 +11,7 @@ main.pdf
 *.toc
 article.template.pdf
 *.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
