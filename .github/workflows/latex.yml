@@ -37,10 +37,19 @@ jobs:
           echo "prefixwithref=$prefixwithref" >> "$GITHUB_OUTPUT"
           echo "pdf=$prefixwithref.pdf" >> "$GITHUB_OUTPUT"
           echo "tex=$prefix.tex" >> "$GITHUB_OUTPUT"
+      -
+        name: Show Outputs
+        run: |
+          echo "runner=${{ steps.texlive_runner.outputs.runner }}"
+          echo "prefix=${{ steps.doc_prefix.outputs.prefix }}"
+          echo "prefixwithref=${{ steps.doc_prefix.outputs.prefixwithref }}"
+          echo "pdf=${{ steps.doc_prefix.outputs.pdf }}"
+          echo "tex=${{ steps.doc_prefix.outputs.tex }}"
+
 
   build_latex:
     needs: workflow-setup
-    runs-on: ubuntu-latest
+    runs-on: ${{ needs.workflow-setup.outputs.runner }}
     name: Build LaTeX Artifact
     env:
       VERSION: ${{ github.ref_name }}
