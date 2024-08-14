@@ -1,0 +1,45 @@
+{
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk-pdf",
+            "tools": [
+                "latexmk-shell-escape"
+            ]
+        },
+        {
+            "name": "pdflatex-shell-escape-recipe",
+            "tools": [
+                "pdflatex-shell-escape"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk-shell-escape",
+            "command": "latexmk",
+            "args": [
+                "--shell-escape",
+                "-pdf",
+                "-interaction=nonstopmode",
+                "-synctex=1",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pdflatex-shell-escape",
+            "command": "pdflatex",
+            "args": [
+                "--shell-escape",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.autoBuild.run": "onFileChange",
+    "latex-workshop.latex.autoBuild.enabled": true,
+    "latex-workshop.latex.build.showOutput": "always",
+    "latex-workshop.latex.outDir": "%DIR%"
+}
