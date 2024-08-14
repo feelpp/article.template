@@ -99,6 +99,8 @@ jobs:
             ./${{ needs.workflow-setup.outputs.pdf }}
             ./README.adoc
             ./img-*
+            ./release
+            ./setup-hooks.sh
             !./.git*
             !./.github*
             !./.vscode*
