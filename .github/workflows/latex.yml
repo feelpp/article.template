@@ -17,19 +17,24 @@ jobs:
       prefixwithref: ${{ steps.doc_prefix.outputs.prefixwithref }}
       pdf: ${{ steps.doc_prefix.outputs.pdf }}
       tex: ${{ steps.doc_prefix.outputs.tex }}
-    env:
-      GH_TOKEN: ${{ secrets.TOKEN_RUNNER }}
     steps:
       - name: Get TeXLive Runner
         id: texlive_runner
         run: |
-          runners=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /orgs/feelpp/actions/runners)
-          texlive=$(echo $runners | jq --arg label "self-texlive" '[.runners[] | any(.labels[]; .name == $label) and .status == "online"] | any')
-          if [ "$texlive" = "false" ]; then
-             echo "runner=ubuntu-latest" >> "$GITHUB_OUTPUT"
+          if ! [ -z "$GH_TOKEN" ]; then
+            runners=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /orgs/feelpp/actions/runners)
+            texlive=$(echo $runners | jq --arg label "self-texlive" '[.runners[] | any(.labels[]; .name == $label) and .status == "online"] | any')
+            if [ "$texlive" = "false" ]; then
+               echo "runner=ubuntu-latest" >> "$GITHUB_OUTPUT"
+            else
+                echo "runner=self-texlive" >> "$GITHUB_OUTPUT"
+            fi
           else
-              echo "runner=self-texlive" >> "$GITHUB_OUTPUT"
+            echo "runner=ubuntu-latest" >> "$GITHUB_OUTPUT
           fi
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_RUNNER }}
+
       - name: Get Document Prefix
         id: doc_prefix
         run: |
