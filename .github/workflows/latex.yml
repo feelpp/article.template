@@ -83,10 +83,10 @@ jobs:
         name: Check compilation of LaTeX document from artifact
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: artifact/${{ needs.build_latex.outputs.tex }}
+          root_file: ${{ needs.build_latex.outputs.tex }}
           latexmk_shell_escape: true
           post_compile: "latexmk -c; rm -rf _minted*"
-          work_in_root_file_dir: ${{ github.workspace }}/artifact
+          working_directory: ${{ github.workspace }}/artifact
 
   release:
     needs: [build_latex, check]
