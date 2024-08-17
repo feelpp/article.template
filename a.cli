@@ -3,6 +3,25 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# setup hooks
+setup() {
+
+for i in commit checkout merge; do
+    cp hooks/post-commit .git/hooks/post-$i
+    chmod +x .git/hooks/post-$i
+done
+echo "Hooks setup successfully."
+
+git checkout
+
+if ! test -f .git/gitHeadInfo.gin; then
+    cp .git/gitHeadInfo.gin gitHeadLocal.gin
+
+    git add gitHeadLocal.gin
+    git commit -m "Created gitHeadLocal.gin for initial setup"
+fi
+}
+
 # Function to create a release
 create_release() {
     VERSION=$1
@@ -48,7 +67,7 @@ create_release() {
 
 # Function to list releases
 list_releases() {
-    git tag
+    git tag --sort=-creatordate | head -n $1
 }
 
 # Function to delete a release
@@ -71,17 +90,25 @@ delete_release() {
 
 # Main script logic
 case "$1" in
+    setup)
+        setup
+        ;;
     create)
         create_release "$2"
         ;;
     list)
-        list_releases
+        list_releases "${2:-5}"
         ;;
     delete)
         delete_release "$2"
         ;;
     *)
-        echo "Usage: $0 {create|list|delete} [version]"
+        echo "Usage: $0 {setup|create|list|delete} [version]"
+        echo "  setup   : Setup hooks for commit, checkout, and merge"
+        echo "  create  : Create a new release with the provided version"
+        echo "  list    : List all existing releases"
+        echo "  delete  : Delete the release with the provided version"
+        echo "  version : Optional argument specifying the version for create and delete commands"
         exit 1
         ;;
 esac

@@ -68,8 +68,7 @@ jobs:
 
       - name: Install hooks 
         run: |
-          sh ./setup-hooks.sh
-          git checkout ${{ github.ref }} # checkout the branch or tag to update gitinfo2
+          bash ./a.cli setup
 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
@@ -98,9 +97,10 @@ jobs:
             ./*.bbl
             ./${{ needs.workflow-setup.outputs.pdf }}
             ./README.adoc
-            ./img-*
-            ./release
-            ./setup-hooks.sh
+            ./img*
+            ./dat*
+            ./*.png
+            ./a.cli
             !./.git*
             !./.github*
             !./.vscode*
