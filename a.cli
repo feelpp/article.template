@@ -4,7 +4,6 @@
 set -e
 
 # setup hooks
-
 setup() {
 
 for i in commit checkout merge; do

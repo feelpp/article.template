@@ -91,9 +91,13 @@ This configuration attempts to use .git/gitHeadInfo.gin if it exists (indicating
 \subsection{Setting Up Git Hooks}
 
 To automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| file with each commit, you need to set up Git hooks. 
-This repository includes a script \mintinline{sh}|setup-hooks.sh| to simplify the installation of these hooks.
+This repository includes the script \mintinline{sh}|a.cli| to simplify the installation of these hooks with the command:
 
-\inputminted[linenos,autogobble,bgcolor=background,fontsize=\small]{sh}{setup-hooks.sh}
+\begin{minted}[bgcolor=background]{sh}
+./a.cli setup
+\end{minted}
+
+\inputminted[linenos,autogobble,bgcolor=background,fontsize=\small,firstline=6,lastline=23]{sh}{a.cli}
 
 This will copy the \mintinline{sh}|post-commit| and \mintinline{sh}|post-checkout| hook scripts to the .git/hooks directory and make them executable. 
 These hooks will automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| and update \mintinline{sh}|gitHeadLocal.gin| file after each commit or checkout.
@@ -103,7 +107,7 @@ The file \mintinline{sh}|gitHeadLocal.gin| is used when the document is compiled
 
 \subsection{Using GitHub Actions}
 
-The GitHub Actions workflow is configured to run the \mintinline{sh}|setup-hooks.sh| script, ensuring that the Git hooks are set up in the CI environment.
+The GitHub Actions workflow is configured to run the command \mintinline{sh}|a.cli setup|, ensuring that the Git hooks are set up in the CI environment.
 This allows the automated compilation of the LaTeX document to include the latest Git information in the article.
 
 The template article repository workflow uses \citep{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
@@ -130,9 +134,9 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
     cd your-repo
     \end{minted}
     \item \textbf{Set Up Git Hooks}:
-    Run the setup-hooks.sh script to set up the necessary Git hooks:
+    Run the \mintinline[bgcolor=background]{sh}|a.cli| script to set up the necessary Git hooks:
     \begin{minted}[bgcolor=background]{sh}
-    ./setup-hooks.sh
+    ./a.cli setup
     \end{minted}
     \item  \textbf{Compile the Document}:
     Compile the LaTeX document to generate the PDF:
@@ -149,7 +153,7 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
     \item \textbf{Create a Tag for Release}:
     Create and push a tag, using semver\footnote{\url{https://semver.org}},  to trigger the GitHub Actions workflow for building and releasing the document:
     \begin{minted}[bgcolor=background]{sh}
-    ./release create v1.0.0
+    ./a.cli create v1.0.0
     \end{minted}
     \item \textbf{Review GitHub Actions Workflow}:
     The GitHub Actions workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. 
@@ -164,22 +168,22 @@ By following this workflow, you can efficiently manage your LaTeX documents, kee
 
 The `release` script simplifies creating and listing releases for your LaTeX document. 
 
-\inputminted[linenos, fontsize=\small, bgcolor=background]{sh}{release}
+\inputminted[linenos, fontsize=\small, bgcolor=background,firstline=25,lastline=66]{sh}{a.cli}
 
 
 
 \begin{description}
     \item[Create a New Release]: To create a new release on GitHub, use the following command:
     \begin{minted}[bgcolor=background]{sh}
-        ./release create v1.0.0
+        ./a.cli create v1.0.0
     \end{minted}
     \item[List All Releases]: To list all releases, use the following command:
     \begin{minted}[bgcolor=background]{sh}
-        ./release list
+        ./a.cli list
     \end{minted}
     \item[Delete a Release]: To delete a release, use the following command:
     \begin{minted}[bgcolor=background]{sh}
-        ./release delete v1.0.0
+        ./a.cli delete v1.0.0
     \end{minted}
 
 \end{description}
