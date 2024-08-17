@@ -100,8 +100,7 @@ jobs:
             ./img*
             ./dat*
             ./*.png
-            ./release
-            ./setup-hooks.sh
+            ./a.cli
             !./.git*
             !./.github*
             !./.vscode*
