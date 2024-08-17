@@ -68,7 +68,7 @@ jobs:
 
       - name: Install hooks 
         run: |
-          sh ./a.cli setup
+          bash ./a.cli setup
 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
