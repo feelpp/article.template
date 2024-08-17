@@ -14,7 +14,7 @@ echo "Hooks setup successfully."
 
 git checkout
 
-if [ ! -f .git/gitHeadInfo.gin ]; then
+if ! test -f .git/gitHeadInfo.gin; then
     cp .git/gitHeadInfo.gin gitHeadLocal.gin
 
     git add gitHeadLocal.gin
