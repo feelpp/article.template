@@ -91,7 +91,7 @@ delete_release() {
 # Main script logic
 case "$1" in
     setup)
-        setup_hooks
+        setup
         ;;
     create)
         create_release "$2"
