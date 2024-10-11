@@ -62,9 +62,9 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Writing scientific articles using LaTeX offers numerous advantages, including precise typesetting, seamless integration of references, and robust version control. 
-This template repository demonstrates best practices for organizing LaTeX projects, utilizing GitHub Actions for automated document compilation, managing bibliographies with Zotero, and optimizing image handling. 
-By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local LaTeX installations.
+Writing scientific articles using \LaTeX{} offers numerous advantages, including precise typesetting, seamless integration of references, and robust version control.
+This template repository demonstrates best practices for organizing \LaTeX{} projects, utilizing GitHub Actions for automated document compilation, managing bibliographies with Zotero, and optimizing image handling.
+By following this template, researchers can enhance their workflow efficiency and ensure consistent document formatting across platforms like Overleaf and local \LaTeX{} installations.
 The releases assets produced by the GitHub Actions allows to upload the article to HAL, arXiv, Zenodo, etc.
 
 
@@ -72,11 +72,11 @@ The releases assets produced by the GitHub Actions allows to upload the article 
 \section{Git Support}
 \label{sec:git-support}
 
-The `gitinfo2` package~\citep{brent_longborough_gitinfo2sty_2015} allows LaTeX documents to include information about the current state of the Git repository, such as the commit hash, author, and date. This is particularly useful for versioning and tracking changes in scientific documents.
+The `gitinfo2` package~\citep{brent_longborough_gitinfo2sty_2015} allows \LaTeX{} documents to include information about the current state of the Git repository, such as the commit hash, author, and date. This is particularly useful for versioning and tracking changes in scientific documents.
 
 \subsection{Configuration}
 
-To include `gitinfo2` in your LaTeX document, add the following lines to your preamble:
+To include `gitinfo2` in your \LaTeX{} document, add the following lines to your preamble:
 
 \begin{minted}[bgcolor=background]{latex}
 \IfFileExists{.git/gitHeadInfo.gin}{
@@ -90,7 +90,7 @@ This configuration attempts to use .git/gitHeadInfo.gin if it exists (indicating
 
 \subsection{Setting Up Git Hooks}
 
-To automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| file with each commit, you need to set up Git hooks. 
+To automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| file with each commit, you need to set up Git hooks.
 This repository includes the script \mintinline{sh}|a.cli| to simplify the installation of these hooks with the command:
 
 \begin{minted}[bgcolor=background]{sh}
@@ -99,7 +99,7 @@ This repository includes the script \mintinline{sh}|a.cli| to simplify the insta
 
 \inputminted[linenos,autogobble,bgcolor=background,fontsize=\small,firstline=6,lastline=23]{sh}{a.cli}
 
-This will copy the \mintinline{sh}|post-commit| and \mintinline{sh}|post-checkout| hook scripts to the .git/hooks directory and make them executable. 
+This will copy the \mintinline{sh}|post-commit| and \mintinline{sh}|post-checkout| hook scripts to the .git/hooks directory and make them executable.
 These hooks will automatically generate the \mintinline{sh}|.git/gitHeadInfo.gin| and update \mintinline{sh}|gitHeadLocal.gin| file after each commit or checkout.
 
 The file \mintinline{sh}|gitHeadLocal.gin| is used when the document is compiled outside of a Git repository, e.g., in Overleaf or in an public archive such as HAL or arXiv.
@@ -108,13 +108,13 @@ The file \mintinline{sh}|gitHeadLocal.gin| is used when the document is compiled
 \subsection{Using GitHub Actions}
 
 The GitHub Actions workflow is configured to run the command \mintinline{sh}|a.cli setup|, ensuring that the Git hooks are set up in the CI environment.
-This allows the automated compilation of the LaTeX document to include the latest Git information in the article.
+This allows the automated compilation of the \LaTeX{} document to include the latest Git information in the article.
 
 The template article repository workflow uses \citep{cheng_xu_xu-chenglatex-action_2024} \mintinline{bash}{xu-cheng/latex-action} to build the latex document.
 
 The GitHub Action workflow:
 \begin{itemize}
-    \item Compiles the LaTeX document using \mintinline{bash}{xu-cheng/latex-action} on \texttt{ubuntu-latest} runner or \texttt{self-texlive} runner hosted on \texttt{feelpp} organisation.
+    \item Compiles the \LaTeX{} document using \mintinline{bash}{xu-cheng/latex-action} on \texttt{ubuntu-latest} runner or \texttt{self-texlive} runner hosted on \texttt{feelpp} organisation.
     \item Uploads the resulting PDF
     \item Creates a release with the PDF as an asset when a new tag is pushed of the type \texttt{v*}, e.g., \texttt{v1.0.0}.
 \end{itemize}
@@ -123,7 +123,7 @@ The GitHub Action workflow:
 \label{sec:full-article-workflow}
 
 
-Here is a summary of the full workflow for creating and maintaining a LaTeX document with Git support:
+Here is a summary of the full workflow for creating and maintaining a \LaTeX{} document with Git support:
 
 \begin{enumerate}
     \item \textbf{Check out the organisation}: if the organisation is \texttt{feelpp} and a \texttt{self-texlive} labelled runner is online, the compilation will be done using the \texttt{self-texlive} runner other it will use the \texttt{ubuntu-latest} runner.
@@ -139,12 +139,12 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
     ./a.cli setup
     \end{minted}
     \item  \textbf{Compile the Document}:
-    Compile the LaTeX document to generate the PDF:
+    Compile the \LaTeX{} document to generate the PDF:
     \begin{minted}[bgcolor=background]{sh}
     pdflatex -shell-escape main.tex
     \end{minted}
     \item \textbf{Make Changes to Your Document}:
-    Edit your LaTeX document and add, commit, and push changes to the repository:
+    Edit your \LaTeX{} document and add, commit, and push changes to the repository:
     \begin{minted}[bgcolor=background]{sh}
     git add .
     git commit -m “Update document”
@@ -156,17 +156,17 @@ Here is a summary of the full workflow for creating and maintaining a LaTeX docu
     ./a.cli create v1.0.0
     \end{minted}
     \item \textbf{Review GitHub Actions Workflow}:
-    The GitHub Actions workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. 
+    The GitHub Actions workflow will automatically compile your \LaTeX{} document and upload the resulting PDF as an artifact.
     You can download the compiled PDF from the Actions tab in your repository.
     \item \textbf{Sync with Overleaf}:
     If you are using Overleaf, sync your GitHub repository with Overleaf to ensure you always have the latest version of your document.
 \end{enumerate}
 
-By following this workflow, you can efficiently manage your LaTeX documents, keep track of changes with Git, and automate the compilation and release process with GitHub Actions.
+By following this workflow, you can efficiently manage your \LaTeX{} documents, keep track of changes with Git, and automate the compilation and release process with GitHub Actions.
 
 \subsection{Document Release}
 
-The `release` script simplifies creating and listing releases for your LaTeX document. 
+The `release` script simplifies creating and listing releases for your \LaTeX{} document.
 
 \inputminted[linenos, fontsize=\small, bgcolor=background,firstline=25,lastline=66]{sh}{a.cli}
 
@@ -193,8 +193,8 @@ This script provides an easy interface for managing releases, automating the tag
 
 \section{Image Naming Convention}
 
-To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the \texttt{img-*} prefix and store them in the same directory as the \texttt{.tex} file. 
-This makes it easier to manage and upload your images along with your LaTeX document.
+To ensure compatibility with platforms like HAL, arXiv, and Overleaf, name your images with the \texttt{img-*} prefix and store them in the same directory as the \texttt{.tex} file.
+This makes it easier to manage and upload your images along with your \LaTeX{} document.
 
 \textbf{Example}:
 \begin{itemize}
@@ -220,7 +220,7 @@ To manage your references with Zotero and integrate them seamlessly into Overlea
     \item Click on the \texttt{Upload} button (top-left corner) and upload your \texttt{references.bib} file.
 \end{enumerate}
 
-\subsection{Include the Bibliography in Your LaTeX Document}
+\subsection{Include the Bibliography in Your \LaTeX{} Document}
 
 Add the following lines to your \texttt{.tex} file to include the bibliography:
 
@@ -238,7 +238,7 @@ Add the following lines to your \texttt{.tex} file to include the bibliography:
 \end{document}
 \end{minted}
 
-\subsection{Cite References in Your LaTeX Document}
+\subsection{Cite References in Your \LaTeX{} Document}
 
 Use the \mintinline{latex}{\cite} command to cite references within your document. For example:
 
@@ -273,7 +273,7 @@ cd my-repo
 \caption{Clone the Repository}
 \end{figure}
 
-\subsection{Add Your LaTeX Source Files}
+\subsection{Add Your \LaTeX{} Source Files}
 Place your \texttt{.tex} file and image files (\texttt{img-*.pdf}, \texttt{img-*.png}, \texttt{img-*.jpg}) in the repository.
 
 \subsection{Commit and Push Changes}
@@ -285,7 +285,7 @@ git commit -m "Add initial LaTeX document and images"
 git push origin main
 \end{minted}
 
-The GitHub Action workflow will automatically compile your LaTeX document and upload the resulting PDF as an artifact. You can download the compiled PDF from the Actions tab in your repository.
+The GitHub Action workflow will automatically compile your \LaTeX{} document and upload the resulting PDF as an artifact. You can download the compiled PDF from the Actions tab in your repository.
 
 \section{Overleaf Integration}
 
@@ -293,7 +293,7 @@ The GitHub Action workflow will automatically compile your LaTeX document and up
 \begin{enumerate}
     \item In Overleaf, create a new project and select \texttt{Import from GitHub}.
     \item Connect your GitHub account and select the repository you want to sync.
-    \item The sync will trigger the workflow and compile your LaTeX document in GitHub.
+    \item The sync will trigger the workflow and compile your \LaTeX{} document in GitHub.
 \end{enumerate}
 
 \subsection{Update References from Zotero}
@@ -305,8 +305,8 @@ The GitHub Action workflow will automatically compile your LaTeX document and up
 \section{Conclusion}
 \label{sec:conclusion}
 
-This template provides a comprehensive approach for creating and managing LaTeX articles, integrating modern tools and workflow to enhance productivity and collaboration. 
-By leveraging GitHub Actions for automated compilation, Zotero for reference management, Overleaf for online editing, and Vscode using \LaTeX workshop extension for editing, researchers can streamline the writing process and focus more on content creation. 
+This template provides a comprehensive approach for creating and managing \LaTeX{} articles, integrating modern tools and workflow to enhance productivity and collaboration.
+By leveraging GitHub Actions for automated compilation, Zotero for reference management, Overleaf for online editing, and Vscode using \LaTeX{} workshop extension for editing, researchers can streamline the writing process and focus more on content creation.
 The structured setup ensures consistent formatting and efficient handling of images and references, making it suitable for both individual use and collaborative projects.
 
 
