@@ -170,4 +170,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             artifact/${{ needs.workflow-setup.outputs.prefixwithref }}.pdf
-            ${{ needs.workflow-setup.outputs.prefixwithref }}.tar.gz
+            ${{ needs.workflow-setup.outputs.prefixwithref }}.zip
