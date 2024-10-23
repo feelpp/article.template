@@ -156,6 +156,7 @@ jobs:
           # mv "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.tar.gz" ./
           cd artifact
           zip -r "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.zip" ./
+          cd ..
           mv "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.zip" ./
           rm -rf "$temp_dir"
 
