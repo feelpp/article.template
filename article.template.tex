@@ -116,8 +116,8 @@ The template article repository workflow uses \citep{cheng_xu_xu-chenglatex-acti
 The GitHub Action workflow:
 \begin{itemize}
     \item Updates the \mintinline{sh}|.git/gitHeadInfo.gin| file with the latest Git information.
-    \item Update the bibtex file from Zotero using the Zotero API, see \cref{sec:export-zotero-library:cli}
-    \item Compiles the \LaTeX{} document using \mintinline{bash}{xu-cheng/latex-action} on \texttt{ubuntu-latest} runner or \texttt{self-texlive} runner hosted on \texttt{feelpp} organisation.
+    \item Update the BibTeX file from Zotero using the Zotero API, see \cref{sec:export-zotero-library:cli}
+    \item Compiles the \LaTeX{} document using \mintinline{bash}{xu-cheng/latex-action} on either the \texttt{ubuntu-latest} runner or the \texttt{self-texlive} runner hosted by the \texttt{feelpp} organization.
     \item Uploads the resulting PDF and a Zip archive of the \LaTeX{} source files as artifacts that can be readily be uploaded to HAL, arXiv, Zenodo, etc.
     \item Creates a release with the PDF as an asset when a new tag is pushed of the type \texttt{v*}, e.g., \texttt{v1.0.0}.
 \end{itemize}
@@ -129,7 +129,7 @@ The GitHub Action workflow:
 Here is a summary of the full workflow for creating and maintaining a \LaTeX{} document with Git support:
 
 \begin{enumerate}
-    \item \textbf{Check out the organisation}: if the organization is \texttt{feelpp} and a \texttt{self-texlive} labelled runner is online, the compilation will be done using the \texttt{self-texlive} runner other it will use the \texttt{ubuntu-latest} runner.
+    \item \textbf{Check out the organization:} if the organization is \texttt{feelpp} and a \texttt{self-texlive} labelled runner is online, the compilation will be done using the \texttt{self-texlive} runner other it will use the \texttt{ubuntu-latest} runner.
     \item \textbf{Clone the Repository}:
     Clone the repository to your local machine:
     \begin{minted}[bgcolor=background]{sh}
@@ -154,7 +154,7 @@ Here is a summary of the full workflow for creating and maintaining a \LaTeX{} d
     git push origin main
     \end{minted}
     \item \textbf{Create a Tag for Release}:
-    Create and push a tag, using semver\footnote{\url{https://semver.org}},  to trigger the GitHub Actions workflow for building and releasing the document:
+    Create and push a tag, using SemVer\footnote{\url{https://semver.org}},  to trigger the GitHub Actions workflow for building and releasing the document:
     \begin{minted}[bgcolor=background]{sh}
     ./a.cli create v1.0.0
     \end{minted}
@@ -208,19 +208,19 @@ This makes it easier to manage and upload your images along with your \LaTeX{} d
 
 \section{Using References from Zotero}
 
-To manage your references with Zotero, you can either export your Zotero library to BibTeX using the command-line interface or the Zotero API, or you can use the Zotero integration in Overleaf. 
+To manage your references with Zotero, you can either export your Zotero library to BibTeX using the command-line interface or the Zotero API, or you can use the Zotero integration in Overleaf.
 Note that these methods are mutually exclusive, meaning you can use either one, but not both at the same time.
 
 \subsection{Export Zotero Library to BibTeX via Command-Line}
 \label{sec:export-zotero-library:cli}
 \begin{enumerate}
-    \item Get a key api for your Zotero account, a read-only key for the group collections is enough.
+    \item Get a key API for your Zotero account, a read-only key for the group collections is enough.
     \item Define \mintinline{sh}|ZOTERO_API_KEY| in your environment.
 \begin{minted}{sh}
-export ZOTER_API_KEY=your key 
+export ZOTER_API_KEY=your key
 \end{minted}
-    \item update \mintinline{sh}|a.cli| and set \mintinline{sh}|DEFAULT_ZOTERO_GROUP_ID| at the top of the file or set the environment variable \mintinline{sh}|ZOTERO_GROUP_ID| or \mintinline{sh}|DEFAULT_ZOTERO_GROUP_ID|.
-    \item use \mintinline{sh}|a.cli| to export the references.
+    \item Update \mintinline{sh}|a.cli| and set \mintinline{sh}|DEFAULT_ZOTERO_GROUP_ID| at the top of the file or set the environment variable \mintinline{sh}|ZOTERO_GROUP_ID| or \mintinline{sh}|DEFAULT_ZOTERO_GROUP_ID|.
+    \item Use \mintinline{sh}|a.cli| to export the references.
 \begin{minted}{sh}
     bash a.cli update-bibtex
 \end{minted}
@@ -234,7 +234,7 @@ export ZOTER_API_KEY=your key
     \item Choose \texttt{BibTeX} as the format and save the file (e.g., \texttt{references.bib}).
 \end{enumerate}
 
-\subsection{Uuse Zotero Integration in Overleaf}
+\subsection{Use Zotero Integration in Overleaf}
 
 \begin{enumerate}
     \item Ensure you have a Zotero account and that your references are properly organized in your Zotero library.
@@ -245,8 +245,8 @@ export ZOTER_API_KEY=your key
     \item Your bibliography will be automatically updated in Overleaf as you add or remove references from your Zotero library.
     \item Use standard LaTeX citation commands such as \mintinline{latex}|\cite{key}| to reference your sources directly within the document.
     \end{enumerate}
-    
-This method allows for seamless integration, with no need to manually export and upload BibTeX files, as Overleaf will handle the citation syncing automatically. 
+
+This method allows for seamless integration, with no need to manually export and upload BibTeX files, as Overleaf will handle the citation syncing automatically.
 Note that changes in your Zotero library will reflect in Overleaf after you refresh the project’s bibliography.
 Again this method is mutually exclusive with the command-line method or direct export from Zotero interface.
 
@@ -318,14 +318,14 @@ git push origin main
 The GitHub Action workflow will automatically compile your \LaTeX{} document and upload the resulting PDF as an artifact. You can download the compiled PDF from the Actions tab in your repository.
 
 % \section{Overleaf Integration}
-% 
+%
 % \subsection{Sync GitHub Repository with Overleaf}
 % \begin{enumerate}
 %     \item In Overleaf, create a new project and select \texttt{Import from GitHub}.
 %     \item Connect your GitHub account and select the repository you want to sync.
 %     \item The sync will trigger the workflow and compile your \LaTeX{} document in GitHub.
 % \end{enumerate}
-% 
+%
 % \subsection{Update References from Zotero}
 % \begin{enumerate}
 %     \item Periodically export your references from Zotero to \texttt{references.bib} and push the updated file to your GitHub repository.
@@ -336,7 +336,7 @@ The GitHub Action workflow will automatically compile your \LaTeX{} document and
 \label{sec:conclusion}
 
 This template provides a comprehensive approach for creating and managing \LaTeX{} articles, integrating modern tools and workflow to enhance productivity and collaboration.
-By leveraging GitHub Actions for automated compilation, Zotero for reference management, Overleaf for online editing, and VScode using \LaTeX{} workshop extension for editing, researchers can streamline the writing process and focus more on content creation.
+By leveraging GitHub Actions for automated compilation, Zotero for reference management, Overleaf for online editing, and VSCode using \LaTeX{} workshop extension for editing, researchers can streamline the writing process and focus more on content creation.
 The structured setup ensures consistent formatting and efficient handling of images and references, making it suitable for both individual use and collaborative projects.
 
 
