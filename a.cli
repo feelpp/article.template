@@ -3,23 +3,63 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# setup hooks
+# Default values
+DEFAULT_ZOTERO_USER_ID=""
+DEFAULT_ZOTERO_API_KEY=""
+DEFAULT_ZOTERO_GROUP_ID="4678293"
+DEFAULT_BIBTEX_FILE="references.bib"
+COLLECTION_ID=""
+
+# Read environment variables or set defaults
+ZOTERO_USER_ID=${ZOTERO_USER_ID:-$DEFAULT_ZOTERO_USER_ID}
+ZOTERO_API_KEY=${ZOTERO_API_KEY:-$DEFAULT_ZOTERO_API_KEY}
+ZOTERO_GROUP_ID=${ZOTERO_GROUP_ID:-$DEFAULT_ZOTERO_GROUP_ID}
+BIBTEX_FILE=${BIBTEX_FILE:-$DEFAULT_BIBTEX_FILE}
+
+# Function to parse command-line arguments
+parse_args() {
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            --zotero-user-id) ZOTERO_USER_ID="$2"; shift ;;
+            --zotero-api-key) ZOTERO_API_KEY="$2"; shift ;;
+            --zotero-group-id) ZOTERO_GROUP_ID="$2"; shift ;;
+            --bibtex-file) BIBTEX_FILE="$2"; shift ;;
+            --help)
+                echo "Usage: $0 [options] {setup|create|list|delete|update-bibtex} [version]"
+                echo "Options:"
+                echo "  --zotero-user-id    Zotero User ID"
+                echo "  --zotero-api-key    Zotero API Key"
+                echo "  --zotero-group-id   Zotero Group ID (optional, omit if using user library)"
+                echo "  --bibtex-file       Path to the BibTeX file (default: your_bibtex_file.bib)"
+                echo "Commands:"
+                echo "  setup               : Setup hooks for commit, checkout, and merge"
+                echo "  create              : Create a new release with the provided version"
+                echo "  list                : List all existing releases"
+                echo "  delete              : Delete the release with the provided version"
+                echo "  update-bibtex       : Fetch and update the BibTeX file from Zotero"
+                echo "  version             : Optional argument specifying the version for create and delete commands"
+                exit 0 ;;
+        esac
+        shift
+    done
+}
+
+# Function to setup hooks
 setup() {
+    for i in commit checkout merge; do
+        cp hooks/post-commit .git/hooks/post-$i
+        chmod +x .git/hooks/post-$i
+    done
+    echo "Hooks setup successfully."
 
-for i in commit checkout merge; do
-    cp hooks/post-commit .git/hooks/post-$i
-    chmod +x .git/hooks/post-$i
-done
-echo "Hooks setup successfully."
+    git checkout
 
-git checkout
+    if ! test -f .git/gitHeadInfo.gin; then
+        cp .git/gitHeadInfo.gin gitHeadLocal.gin
 
-if ! test -f .git/gitHeadInfo.gin; then
-    cp .git/gitHeadInfo.gin gitHeadLocal.gin
-
-    git add gitHeadLocal.gin
-    git commit -m "Created gitHeadLocal.gin for initial setup"
-fi
+        git add gitHeadLocal.gin
+        git commit -m "Created gitHeadLocal.gin for initial setup"
+    fi
 }
 
 # Function to create a release
@@ -31,18 +71,17 @@ create_release() {
         exit 1
     fi
 
-    # check if the tag already exists
+    # Check if the tag already exists
     if git rev-parse "$VERSION" >/dev/null 2>&1; then
         echo "Error: Tag $VERSION already exists."
         exit 1
     fi
 
-    # check the format of the version number
+    # Check the format of the version number
     if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-z]+\.[0-9]+)?$ ]]; then
         echo "Error: Version number should be in the format vx.y.z or vx.y.z-pre.a."
         exit 1
     fi
-
 
     # Tag the repository with the provided version
     git tag -a "$VERSION" -m "Release $VERSION"
@@ -50,7 +89,7 @@ create_release() {
     # Checkout the tag to trigger post-commit hook to update gitinfo2 info file
     git checkout
 
-    # show the reltag line of .git/gitHeadInfo.gin
+    # Show the reltag line of .git/gitHeadInfo.gin
     grep reltag .git/gitHeadInfo.gin
 
     cp .git/gitHeadInfo.gin gitHeadLocal.gin
@@ -60,7 +99,7 @@ create_release() {
     git tag -f -a "$VERSION" -m "Release $VERSION"
 
     # Push the changes and the tags
-    git push origin main --follow-tags
+    git push origin --follow-tags
 
     echo "Release $VERSION created and pushed successfully."
 }
@@ -70,6 +109,11 @@ list_releases() {
     git tag --sort=-creatordate | head -n $1
 }
 
+# Function to clean latex build files
+clean() {
+    # clean latex build files
+    rm -f *.aux *.bbl *.blg *.log *.out *.pyg *.fls *.synctex* *.toc *.fdb_latexmk *.fls *.idx *.ilg *.ind *.chl *.lof *.lot *.pdf
+}
 # Function to delete a release
 delete_release() {
     VERSION=$1
@@ -83,15 +127,133 @@ delete_release() {
     git tag -d "$VERSION"
 
     # Delete the tag remotely
-    #git push origin --delete "$VERSION"
+    # git push origin --delete "$VERSION"
 
     echo "Release $VERSION deleted successfully."
 }
 
+# Function to fetch and update BibTeX file from Zotero
+update_bibtex() {
+    if [ -z "$ZOTERO_GROUP_ID" ]; then
+        if [ -z "$ZOTERO_USER_ID" ]; then
+            echo "Zotero group ID and user ID are not set, one of them is required."
+            echo "If Group ID is set, User ID is not required."
+            exit 1
+        fi
+    fi
+
+    if [ -z "$ZOTERO_API_KEY" ]; then
+        echo "Zotero API key is not set."
+        exit 1
+    fi
+
+    echo "Fetching BibTeX entries from Zotero..."
+
+    # Define the URL to fetch BibTeX
+    if [ -z "$ZOTERO_GROUP_ID" ]; then
+        URL="https://api.zotero.org/users/$ZOTERO_USER_ID/items?format=biblatex"
+    else
+        URL="https://api.zotero.org/groups/$ZOTERO_GROUP_ID/items?format=biblatex"
+    fi
+    start=0
+    limit=100
+    has_more=true
+    echo "" > "$BIBTEX_FILE"
+    while $has_more; do
+        response=$(curl -s -H "Zotero-API-Key: $ZOTERO_API_KEY" "$URL&start=$start&limit=$limit")
+
+        if [ -z "$response" ]; then
+            echo "No more items to fetch."
+            has_more=false
+            break
+        fi
+
+        echo "$response" >> "$BIBTEX_FILE"
+
+        # Check if we need to fetch more items
+        num_items=$(echo "$response" | grep -c "@")  # Counting the number of BibTeX entries
+        if [ "$num_items" -lt "$limit" ]; then
+            has_more=false
+        else
+            start=$((start + limit))
+        fi
+    done
+
+    echo "BibTeX entries updated successfully in $BIBTEX_FILE."
+}
+
+update_bibtex2() {
+    if [ -z "$ZOTERO_GROUP_ID" ]; then
+        if [ -z "$ZOTERO_USER_ID" ]; then
+            echo "Zotero group ID and user ID are not set, one of them is required."
+            echo "If Group ID is set, User ID is not required."
+            exit 1
+        fi
+    fi
+
+    if [ -z "$ZOTERO_API_KEY" ]; then
+        echo "Zotero API key is not set."
+        exit 1
+    fi
+
+    echo "Fetching BibTeX entries from Zotero..."
+
+    # Define the URL to fetch BibTeX
+    if [ -z "$ZOTERO_GROUP_ID" ]; then
+        URL="https://api.zotero.org/users/$ZOTERO_USER_ID/items?format=bibtex"
+    else
+        URL="https://api.zotero.org/groups/$ZOTERO_GROUP_ID/items?format=bibtex"
+    fi
+
+    start=0
+    limit=100
+    has_more=true  # Initialize the loop control variable
+    echo "" > "$BIBTEX_FILE"
+
+    while $has_more; do
+        # Send the request
+        response=$(curl -s -w "%{http_code}" -H "Zotero-API-Key: $ZOTERO_API_KEY" "$URL&start=$start&limit=$limit")
+
+        # Separate the response content and the status code
+        http_code=$(echo "$response" | tail -n1)
+        content=$(echo "$response" | sed '$d')  # Everything except the last line (status code)
+
+        # Check if the request was successful (status code 200)
+        if [ "$http_code" -ne 200 ]; then
+            echo "Error fetching data: HTTP status $http_code"
+            exit 1
+        fi
+        if [ -z "$content" ]; then
+            echo "No more items to fetch."
+            has_more=false
+            break
+        fi
+        # Append the content to the BibTeX file
+        echo "$content" >> "$BIBTEX_FILE"
+
+        # Check if there are more items by inspecting the Link header or counting the items
+        num_items=$(echo "$content" | grep -c "@")  # Counting BibTeX entries
+        echo "downloaded $num_items items"
+        if [ "$num_items" = "0" ]; then
+            has_more=false
+        else
+            start=$((start + limit))
+        fi
+        echo "start=$start, has_more=$has_more"
+    done
+
+    echo "BibTeX entries updated successfully in $BIBTEX_FILE."
+}
+
 # Main script logic
+parse_args "$@"
+
 case "$1" in
     setup)
         setup
+        ;;
+    clean)
+        clean
         ;;
     create)
         create_release "$2"
@@ -102,13 +264,24 @@ case "$1" in
     delete)
         delete_release "$2"
         ;;
+    update-bibtex)
+        update_bibtex2
+        ;;
     *)
-        echo "Usage: $0 {setup|create|list|delete} [version]"
-        echo "  setup   : Setup hooks for commit, checkout, and merge"
-        echo "  create  : Create a new release with the provided version"
-        echo "  list    : List all existing releases"
-        echo "  delete  : Delete the release with the provided version"
-        echo "  version : Optional argument specifying the version for create and delete commands"
+        echo "Usage: $0 [options] {setup|create|list|delete|update-bibtex} [version]"
+        echo "Options:"
+        echo "  --zotero-user-id    Zotero User ID (optional, omit if using group id given)"
+        echo "  --zotero-api-key    Zotero API Key"
+        echo "  --zotero-group-id   Zotero Group ID (optional, omit if using user id given)"
+        echo "  --bibtex-file       Path to the BibTeX file (default: your_bibtex_file.bib)"
+        echo "Commands:"
+        echo "  setup               : Setup hooks for commit, checkout, and merge"
+        echo "  clean               : Clean latex build files"
+        echo "  create              : Create a new release with the provided version"
+        echo "  list                : List all existing releases"
+        echo "  delete              : Delete the release with the provided version"
+        echo "  update-bibtex       : Fetch and update the BibTeX file from Zotero"
+        echo "  version             : Optional argument specifying the version for create and delete commands"
         exit 1
         ;;
 esac

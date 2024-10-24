@@ -22,7 +22,7 @@ jobs:
         id: texlive_runner
         run: |
           if ! [ -z "$GH_TOKEN" ]; then
-            runners=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /orgs/feelpp/actions/runners)
+            runners=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /orgs/${{ github.repository_owner }}/actions/runners)
             texlive=$(echo $runners | jq --arg label "self-texlive" '[.runners[] | any(.labels[]; .name == $label) and .status == "online"] | any')
             if [ "$texlive" = "false" ]; then
                echo "runner=ubuntu-latest" >> "$GITHUB_OUTPUT"
@@ -60,15 +60,34 @@ jobs:
     name: Build LaTeX Artifact
     env:
       VERSION: ${{ github.ref_name }}
+      ZOTERO_API_KEY: ${{ secrets.ZOTERO_API_KEY }}
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
         with:
           clean: true
 
-      - name: Install hooks
+      - name: Install hooks 
         run: |
           bash ./a.cli setup
+
+      - name: Update BibTeX references
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          bash ./a.cli update-bibtex
+
+      - name: Commit new references.bib
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
+          git add references.bib
+          if ! git diff --cached --quiet; then
+            git commit -m "Update references.bib from Zotero"
+            git push
+          else
+            echo "No changes in references.bib to commit."
+          fi
 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
@@ -97,10 +116,18 @@ jobs:
             ./*.bbl
             ./${{ needs.workflow-setup.outputs.pdf }}
             ./README.adoc
+            ./hooks*
             ./img*
             ./dat*
             ./*.png
             ./a.cli
+            ./*.sty
+            ./chapters*
+            ./software*
+            ./exclude.txt
+            ./sections*
+            ./litterature*
+            ./graphics*
             !./.git*
             !./.github*
             !./.vscode*
@@ -152,12 +179,11 @@ jobs:
       - name: Archive Article
         run: |
           temp_dir=$(mktemp -d)
-          # tar -czvf "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.tar.gz" -C artifact ./
-          # mv "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.tar.gz" ./
           cd artifact
           zip -r "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.zip" ./
           cd ..
           mv "${temp_dir}/${{ needs.workflow-setup.outputs.prefixwithref }}.zip" ./
+          rm -rf "$temp_dir"
           rm -rf "$temp_dir"
 
       - name: Create Release
