@@ -132,55 +132,6 @@ delete_release() {
     echo "Release $VERSION deleted successfully."
 }
 
-# Function to fetch and update BibTeX file from Zotero
-update_bibtex() {
-    if [ -z "$ZOTERO_GROUP_ID" ]; then
-        if [ -z "$ZOTERO_USER_ID" ]; then
-            echo "Zotero group ID and user ID are not set, one of them is required."
-            echo "If Group ID is set, User ID is not required."
-            exit 1
-        fi
-    fi
-
-    if [ -z "$ZOTERO_API_KEY" ]; then
-        echo "Zotero API key is not set."
-        exit 1
-    fi
-
-    echo "Fetching BibTeX entries from Zotero..."
-
-    # Define the URL to fetch BibTeX
-    if [ -z "$ZOTERO_GROUP_ID" ]; then
-        URL="https://api.zotero.org/users/$ZOTERO_USER_ID/items?format=biblatex"
-    else
-        URL="https://api.zotero.org/groups/$ZOTERO_GROUP_ID/items?format=biblatex"
-    fi
-    start=0
-    limit=100
-    has_more=true
-    echo "" > "$BIBTEX_FILE"
-    while $has_more; do
-        response=$(curl -s -H "Zotero-API-Key: $ZOTERO_API_KEY" "$URL&start=$start&limit=$limit")
-
-        if [ -z "$response" ]; then
-            echo "No more items to fetch."
-            has_more=false
-            break
-        fi
-
-        echo "$response" >> "$BIBTEX_FILE"
-
-        # Check if we need to fetch more items
-        num_items=$(echo "$response" | grep -c "@")  # Counting the number of BibTeX entries
-        if [ "$num_items" -lt "$limit" ]; then
-            has_more=false
-        else
-            start=$((start + limit))
-        fi
-    done
-
-    echo "BibTeX entries updated successfully in $BIBTEX_FILE."
-}
 
 update_bibtex2() {
     if [ -z "$ZOTERO_GROUP_ID" ]; then
@@ -242,6 +193,8 @@ update_bibtex2() {
         echo "start=$start, has_more=$has_more"
     done
 
+    # Remove unwanted BibTeX entries matching the pattern
+    python3 -c "import os, re; fname = '$BIBTEX_FILE'; content = open(fname).read(); new_content = re.sub(r'@misc\{noauthor_notitle_nodate(-*\d*),\s*(.*)*\n*\}\n*', '', content); open(fname, 'w').write(new_content)"
     echo "BibTeX entries updated successfully in $BIBTEX_FILE."
 }
 
