@@ -194,7 +194,7 @@ update_bibtex2() {
     done
 
     # Remove unwanted BibTeX entries matching the pattern
-    python3 -c "import os, re; fname = '$BIBTEX_FILE'; content = open(fname).read(); new_content = re.sub(r'@misc\{noauthor_notitle_nodate(-*\d*),\s*\}\n+', '', content); open(fname, 'w').write(new_content)"
+    python3 -c "import os, re; fname = '$BIBTEX_FILE'; content = open(fname).read(); new_content = re.sub(r'@misc\{noauthor_notitle_nodate(-*\d*),\s*(.*)*\n*\}\n*', '', content); open(fname, 'w').write(new_content)"
     echo "BibTeX entries updated successfully in $BIBTEX_FILE."
 }
 
